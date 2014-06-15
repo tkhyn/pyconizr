@@ -1,0 +1,28 @@
+syntax: glob
+
+# distutils generated files and folders
+dist
+MANIFEST
+
+# buildout files and folders
+bin
+.installed.cfg
+pyconizr.egg-info
+
+# eclipse project related files and folders
+.pydevproject
+.project
+.settings
+
+# python binary files
+*.pyc
+
+# locale binary files
+*.mo
+
+# log files
+*.log
+
+# Windows thumbnails
+**/thumbs.db
+
