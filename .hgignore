@@ -26,3 +26,5 @@ pyconizr.egg-info
 # Windows thumbnails
 **/thumbs.db
 
+# test files
+.coverage

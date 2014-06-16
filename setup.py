@@ -46,7 +46,8 @@ metadata = dict(
         'Topic :: Multimedia :: Graphics :: Graphics Conversion',
         'Topic :: Multimedia :: Graphics :: Editors :: Vector-Based',
         'Topic :: Software Development :: Build Tools',
-    ]
+    ],
+    scripts=['scripts/pyconizr.py']
 )
 
 
