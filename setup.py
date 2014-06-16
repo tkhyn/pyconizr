@@ -12,6 +12,7 @@ INC_PACKAGES = 'pyconizr',  # string or tuple of strings
 EXC_PACKAGES = ()  # tuple of strings
 
 install_requires = (
+    'scour>=0.28',
 )
 
 # imports __version__ variable
