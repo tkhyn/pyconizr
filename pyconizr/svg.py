@@ -31,9 +31,14 @@ class SVGObj(object):
         for __, v in SCOUR_OPTIONS.values():
             options.setdefault(v['dest'], v['default'])
 
-        scour.start(Values(options),
-                    scour.maybe_gziped_file(self.path),
-                    scour.maybe_gziped_file(self.path + 'opt', 'wb'))
+        f = open(self.path, 'r')
+        input_str = f.read()
+        f.close()
+        svg_opt = scour.scourString(input_str, Values(options))
+
+        f = open(self.path, 'w')
+        f.write(svg_opt)
+        f.close()
 
         return True
 

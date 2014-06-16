@@ -17,7 +17,7 @@ class OptimizeTests(PyconizrTestCase):
         self.iconizr.optimize()
 
         for svg_file in self.iconizr.svg_in:
-            svg_elt = ET.parse(svg_file.path + 'opt').getroot()
+            svg_elt = ET.parse(svg_file.path).getroot()
             self.assertEqual(svg_elt.tag, NS + 'svg')
             self.assertEqual(len(svg_elt), 1)
 
