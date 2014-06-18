@@ -1,8 +1,6 @@
 from base import PyconizrTestCase
 
-from xml.etree import ElementTree as ET
-
-NS = '{http://www.w3.org/2000/svg}'
+from lxml import etree as ET
 
 
 class OptimizeTests(PyconizrTestCase):
@@ -11,20 +9,20 @@ class OptimizeTests(PyconizrTestCase):
 
     def test_optimize_individual_files(self):
 
-        for svg_file in self.iconizr.svg_in:
-            self.assertExists(svg_file.path)
+        for icon in self.iconizr.icons:
+            self.assertExists(icon.path)
 
         self.iconizr.optimize()
 
-        for svg_file in self.iconizr.svg_in:
-            svg_elt = ET.parse(svg_file.path).getroot()
-            self.assertEqual(svg_elt.tag, NS + 'svg')
-            self.assertEqual(len(svg_elt), 1)
+        for icon in self.iconizr.icons:
+            icon_root = ET.parse(icon.path).getroot()
+            self.assertEqual(icon_root.tag, self.nstag('svg'))
+            self.assertEqual(len(icon_root), 1)
 
-            g_elt = svg_elt[0]
-            self.assertEqual(g_elt.tag, NS + 'g')
+            g_elt = icon_root[0]
+            self.assertEqual(g_elt.tag, self.nstag('g'))
             self.assertEqual(len(g_elt), 1)
 
             path_elt = g_elt[0]
-            self.assertEqual(path_elt.tag, NS + 'path')
+            self.assertEqual(path_elt.tag, self.nstag('path'))
             self.assertEqual(len(path_elt), 0)

@@ -17,11 +17,15 @@ class PyconizrTestCase(TestCase):
 
     options = {}
 
+    # constant namespace prefix
+    NS = '{http://www.w3.org/2000/svg}'
+
     def setUp(self):
 
         options = copy(self.options)
         for o, param in OPTIONS.iteritems():
-            options.setdefault(o, param[1]['default'])
+            options.setdefault(param[1].get('dest', None) or o,
+                               param[1]['default'])
 
         self.out_dir = os.path.join(os.path.dirname(__file__), 'out')
         options.update({'in': os.path.join(os.path.dirname(__file__), 'svgs'),
@@ -34,6 +38,13 @@ class PyconizrTestCase(TestCase):
         if os.path.exists(self.out_dir):
             shutil.rmtree(self.out_dir)
         self.iconizr.clean()
+
+    def nstag(self, tag):
+        """
+        Transforms a simple tag into a namespaced tag
+        """
+        return self.NS + tag
+
 
     def assertExists(self, path, msg=None):
         if not os.path.exists(path):

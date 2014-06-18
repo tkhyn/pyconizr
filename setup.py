@@ -7,12 +7,14 @@ MIT license (see LICENSE.txt)
 
 from distutils.core import setup
 import os
+import sys
 
 INC_PACKAGES = 'pyconizr',  # string or tuple of strings
 EXC_PACKAGES = ()  # tuple of strings
 
 install_requires = (
     'scour>=0.28',
+    'lxml>=3.3.5',
 )
 
 # imports __version__ variable
@@ -83,3 +85,11 @@ setup(**dict(metadata,
    long_description=read('README.rst'),
    install_requires=install_requires
 ))
+
+try:
+    import cairo
+    import rsvg
+except ImportError:
+    sys.stderr('To run Pyconizr, you need to install cairo and rsvg as well as'
+               'their Python bindings. On Windows, it\'s faster to download '
+               'and install the all-in-one version of PyGTK.')

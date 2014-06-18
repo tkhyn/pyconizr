@@ -25,12 +25,18 @@ OPTIONS = {
         default=os.path.join(_cwd, 'sprites'),
         help='SVG and PNG sprite output directory'
     )),
+    'out-icons': ((), dict(
+        action='store',
+        default=False,
+        help='Individual SVG and PNG icons sub-directory '
+             '(relative to out-sprite) [default = do not generate icons]'
+    )),
     'css-fmt': (('-f'), dict(
         action='store',
         choices=('css', 'sass', 'less'),
         default='css',
         help='The output format (CSS, SASS or LESS)'
-    ))
+    )),
 }
 
 
@@ -123,7 +129,7 @@ SCOUR_OPTIONS = {
     'strip-xml-prolog': ((), dict(
         dest='strip_xml_prolog',
         action='store_true',
-        default=True,
+        default=None,
         help='won\'t output the <?xml ?> prolog'
     )),
     'enable-viewboxing': ((), dict(
