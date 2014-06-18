@@ -45,7 +45,6 @@ class PyconizrTestCase(TestCase):
         """
         return self.NS + tag
 
-
     def assertExists(self, path, msg=None):
         if not os.path.exists(path):
             standardMsg = '%s does not exist' % path
@@ -71,3 +70,18 @@ class PyconizrTestCase(TestCase):
     def assertListDir(self, path, lst, msg=None):
         self.assertExists(path, msg)
         self.assertListEqual(os.listdir(path), lst)
+
+    def assertSame(self, path1, path2, msg=None):
+        """
+        Check that 2 files are identical
+        """
+        f1 = open(path1, 'rb')
+        f2 = open(path2, 'rb')
+
+        equal = f1.read() == f2.read()
+
+        f1.close()
+        f2.close()
+
+        if not equal:
+            self.fail(self._formatMessage(msg, 'The files are different'))

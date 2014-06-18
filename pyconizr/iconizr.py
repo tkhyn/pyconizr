@@ -61,7 +61,7 @@ class Iconizr(object):
         Executes all the tasks
         """
 
-        tasks = ['optimize', 'spritize', 'makePNG', 'makeCSS', 'commit']
+        tasks = ['optimize', 'spritize', 'makePNGs', 'makeCSS', 'commit']
         for t in tasks:
             if not getattr(self, t)():
                 return False
@@ -91,8 +91,20 @@ class Iconizr(object):
 
         return True
 
-    def makePNG(self):
-        return True
+    def makePNGs(self):
+
+        if self.options['out-png']:
+            # make sprite png
+            self.png_sprite = PNGfromSVG(self.sprite.path)
+            self.png_sprite.convert(os.path.splitext(self.temp_sprite)[0] + '.png')
+
+            # make icons png
+            if self.options['out-icons']:
+                for icon in self.icons:
+                    png_icon = PNGfromSVG(icon.path)
+                    png_icon.convert(os.path.splitext(icon.path)[0] + '.png')
+
+            return True
 
     def makeCSS(self):
         return True
