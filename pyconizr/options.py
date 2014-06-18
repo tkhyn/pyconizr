@@ -13,29 +13,42 @@ OPTIONS = {
     'in': (('-i'), dict(
         action='store',
         default=_cwd,
-        help='Source directory'
+        help='Source directory [default = cwd]'
     )),
     'out': (('-o'), dict(
         action='store',
-        default=_cwd,
-        help='CSS file output directory'
+        default=os.path.join(_cwd, 'css'),
+        help='CSS file name or output directory [default = cwd/css]'
     )),
     'out-sprite': (('-s'), dict(
         action='store',
         default=os.path.join(_cwd, 'sprites'),
-        help='SVG and PNG sprite output directory'
+        help='SVG and PNG sprite output directory or filename '
+             '[default = cwd/sprites]'
     )),
     'out-icons': ((), dict(
-        action='store',
+        action='store_true',
         default=False,
-        help='Individual SVG and PNG icons sub-directory '
-             '(relative to out-sprite) [default = do not generate icons]'
+        help='Should individual (optimised) icons be generated? '
+             '[default = False]'
+    )),
+    'out-icons-dir': ((), dict(
+        action='store',
+        default='icons',
+        help='Individual SVG and PNG icons sub-directory, relative to '
+             'out-sprite [default = out-icons/icons]'
+    )),
+    'out-png': ((), dict(
+        action='store_true',
+        default=True,
+        help='Generate PNG fallback sprite (and icons if out-icons is defined)'
+             '[default = True]'
     )),
     'css-fmt': (('-f'), dict(
         action='store',
         choices=('css', 'sass', 'less'),
         default='css',
-        help='The output format (CSS, SASS or LESS)'
+        help='The output format (CSS, SASS or LESS) [default = css]'
     )),
 }
 

@@ -8,6 +8,7 @@ import shutil
 import tempfile
 
 from svg import SVGOpt, SVGSprite
+from png import PNGfromSVG
 
 
 TEMP_PREFIX = 'pyconizr-'
@@ -41,8 +42,7 @@ class Iconizr(object):
 
         # parses the input directory and create SVG objects
         self.icons = []
-        temp_src_dir = os.path.join(self.temp_dir,
-                                    options['out-icons'] or 'icons')
+        temp_src_dir = os.path.join(self.temp_dir, options['out-icons-dir'])
         os.makedirs(temp_src_dir)
         for f in os.listdir(self.src):
             p_src = os.path.join(self.src, f)
@@ -101,9 +101,9 @@ class Iconizr(object):
         # copy temporary files to destination
         shutil.copy(self.temp_sprite, self.tgt_sprite)
 
-        icons_dir = self.options['out-icons']
-        if icons_dir:
+        if self.options['out-icons']:
             # copy icons if required
+            icons_dir = self.options['out-icons-dir']
             icons_temp_dir = os.path.join(self.temp_dir, icons_dir)
             icons_tgt_dir = os.path.join(self.tgt_sprite, icons_dir)
             for i in os.listdir(icons_temp_dir):
