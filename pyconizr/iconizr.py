@@ -8,7 +8,6 @@ import shutil
 import tempfile
 
 from svg import SVGOpt, SVGSprite
-from png import PNGfromSVG
 
 
 TEMP_PREFIX = 'pyconizr-'
@@ -95,14 +94,12 @@ class Iconizr(object):
 
         if self.options['out-png']:
             # make sprite png
-            self.png_sprite = PNGfromSVG(self.sprite.path)
-            self.png_sprite.convert(os.path.splitext(self.temp_sprite)[0] + '.png')
+            self.sprite.makePNG()
 
-            # make icons png
+            # make icons png if required
             if self.options['out-icons']:
                 for icon in self.icons:
-                    png_icon = PNGfromSVG(icon.path)
-                    png_icon.convert(os.path.splitext(icon.path)[0] + '.png')
+                    icon.makePNG()
 
             return True
 

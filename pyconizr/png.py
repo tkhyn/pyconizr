@@ -1,3 +1,5 @@
+import os
+
 import cairo
 import rsvg
 
@@ -29,13 +31,24 @@ class PNGfromSVG(object):
         self.height = h
         self.scale = scale
 
+        self.png = None
+
     def get_dimensions(self):
         return self.width, self.height
 
-    def convert(self, output):
+    def convert(self, dest=None, force=True):
+
+        if self.png and not force:
+            return
+
+        if dest is None:
+            dest = os.path.splitext(self.path)[0] + '.png'
+
         surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, self.width, self.height)
         ctxt = cairo.Context(surf)
         ctxt.scale(self.scale, self.scale)
 
         self.hdlr.render_cairo(ctxt)
-        surf.write_to_png(output)
+        surf.write_to_png(dest)
+
+        self.png = dest

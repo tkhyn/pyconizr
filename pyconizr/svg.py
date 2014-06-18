@@ -35,6 +35,10 @@ class SVGObj(object):
         # write XML to file
         self.xml.write(self.path, xml_declaration=xml_dec)
 
+    def makePNG(self):
+        self.png = PNGfromSVG(self.path)
+        self.png.convert()
+
 
 class SVGOpt(SVGObj):
     """
