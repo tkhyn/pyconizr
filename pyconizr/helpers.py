@@ -19,6 +19,9 @@ def parseDim(dim):
     return val
 
 
-def f2str(f):
+def f2str(f, unit=None):
     s = str(f)
-    return s[-2:] == '.0' and s[:-2] or s
+    r = s[-2:] == '.0' and s[:-2] or s
+    if r != '0' and unit:
+        r += unit
+    return r

@@ -1,0 +1,16 @@
+.red_triangle, .yellow_star {
+    background-image: url(sprites/svgs.svg);
+    background-repeat: no-repeat;
+}
+
+.red_triangle {
+    background-position: 0 0;
+    width: 32px;
+    height: 32px;
+}
+
+.yellow_star {
+    background-position: 0 32px;
+    width: 32px;
+    height: 32px;
+}

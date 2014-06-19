@@ -50,6 +50,11 @@ OPTIONS = {
         default='css',
         help='The output format (CSS, SASS or LESS) [default = css]'
     )),
+    'css-common': (('-c'), dict(
+        action='store',
+        default=None,
+        help='A class name that is common to all icons [default = None]'
+    )),
 }
 
 

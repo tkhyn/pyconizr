@@ -1,0 +1,24 @@
+{% if common_class -%}
+.{{ common_class }}
+{%- else -%}
+	{%- for icon in sprite.icons -%}
+		{{ icon.css_selector() }}
+		{%- if not loop.last -%}, {% endif -%}
+	{%- endfor %}
+{%- endif %} {
+    background-image: url({{ sprite_relpath }});
+    background-repeat: no-repeat;
+	{%- if global_dims %}
+    width: {{ global_dims['width'] }};
+    height: {{ global_dims['height'] }};
+	{%- endif %}
+}
+{% for icon in sprite.icons %}
+{{ icon.css_selector() }} {
+    background-position: {{ icon.css('background-position') }};
+{%- if not global_dims %}
+    width: {{ icon.css('width') }};
+    height: {{ icon.css('height') }};
+{%- endif %}
+}
+{% endfor %}

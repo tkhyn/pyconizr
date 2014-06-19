@@ -30,7 +30,7 @@ class PyconizrTestCase(TestCase):
         self.out_dir = os.path.join(os.path.dirname(__file__), 'out')
         options.update({'in': os.path.join(os.path.dirname(__file__), 'svgs'),
                         'out': self.out_dir,
-                        'out-sprite': os.path.join(self.out_dir, 'sprite')})
+                        'out-sprite': os.path.join(self.out_dir, 'sprites')})
 
         self.iconizr = Iconizr(**options)
 
@@ -71,17 +71,22 @@ class PyconizrTestCase(TestCase):
         self.assertExists(path, msg)
         self.assertListEqual(os.listdir(path), lst)
 
-    def assertSame(self, path1, path2, msg=None):
+    def assertSame(self, path1, path2, mode='b', msg=None):
         """
         Check that 2 files are identical
         """
-        f1 = open(path1, 'rb')
-        f2 = open(path2, 'rb')
+        f1 = open(path1, 'r' + mode)
+        f2 = open(path2, 'r' + mode)
 
-        equal = f1.read() == f2.read()
+        s1 = f1.read()
+        s2 = f2.read()
 
         f1.close()
         f2.close()
 
-        if not equal:
-            self.fail(self._formatMessage(msg, 'The files are different'))
+        if mode == 't':
+            # text mode
+            self.assertEqual(s1, s2)
+        elif not s1 == s2:
+            self.fail(self._formatMessage(msg,
+                                          'The files are binary different'))

@@ -3,8 +3,8 @@ import re
 from optparse import Values
 
 from lxml import etree as ET, objectify
-
 from scour import scour
+import jinja2
 
 from helpers import parseDim, f2str
 from png import PNGfromSVG
@@ -25,13 +25,13 @@ class SVGObj(object):
 
     def __init__(self, path):
         self.path = path
-        self.id = os.path.splitext(os.path.split(path)[1])[0]
+        self.name = os.path.splitext(os.path.split(path)[1])[0]
 
-    def save(self, options={}):
+    def save(self, iconizr):
 
         # default xml_declaration setting
-        xml_dec = None if options['strip_xml_prolog'] is None \
-                  else (not options['strip_xml_prolog'])
+        strip = iconizr.options['strip_xml_prolog']
+        xml_dec = None if strip is None else not strip
         # write XML to file
         self.xml.write(self.path, xml_declaration=xml_dec)
 
@@ -40,13 +40,13 @@ class SVGObj(object):
         self.png.convert()
 
 
-class SVGOpt(SVGObj):
+class SVGIcon(SVGObj):
     """
-    An SVG file that should be optimized
+    An SVG icon that should be included in a SVGSprite
     """
 
     def __init__(self, path):
-        super(SVGOpt, self).__init__(path)
+        super(SVGIcon, self).__init__(path)
         self.xml = ET.parse(self.path)
         self.root = self.xml.getroot()
         self.png = PNGfromSVG(self.path)
@@ -78,23 +78,37 @@ class SVGOpt(SVGObj):
                 self.width, self.height, __ = self.png.get_dimensions()
 
             for dim in ('width', 'height'):
-                self.root.set(dim, f2str(getattr(self, dim)) + 'px')
+                self.root.set(dim, f2str(getattr(self, dim), 'px'))
 
-    def optimize(self, options):
+        # position initialisation
+        self.X = self.Y = 0
+
+    def optimize(self, iconizr):
 
         f = open(self.path, 'r')
         input_str = f.read()
         f.close()
 
-        svg_opt = scour.scourString(input_str, Values(options))
+        svg_opt = scour.scourString(input_str, Values(iconizr.options))
 
         # update XML tree
         self.root = ET.fromstring(svg_opt)
         self.xml._setroot(self.root)
 
-        self.save(options)
+        self.save(iconizr)
 
         return True
+
+    def css_selector(self):
+        return '.' + self.name
+
+    def css(self, prop):
+        if prop in ('height', 'width'):
+            return f2str(getattr(self, prop), 'px')
+        elif prop == 'background-position':
+            return f2str(self.X, 'px') + ' ' + f2str(self.Y, 'px')
+        else:
+            raise ValueError('Invalid CSS property: ' + prop)
 
 
 class SVGSprite(SVGObj):
@@ -143,8 +157,9 @@ class SVGSprite(SVGObj):
         width = icon.width
         height = icon.height
 
-        root_attrs = {'id': icon.id,
-                      'y': f2str(self.height)}
+        icon.Y = self.height
+        root_attrs = {'id': icon.name,
+                      'y': f2str(icon.Y)}
 
         self.width = max(self.width, width)
         self.height += height
@@ -158,3 +173,29 @@ class SVGSprite(SVGObj):
             icon.root.tag = tag[i + 1:]
 
         self.root.append(icon.root)
+
+    def makeCSS(self, iconizr):
+
+        # destination file
+        dest = os.path.join(iconizr.temp_dir, 'css', iconizr.css_name)
+        os.makedirs(os.path.dirname(dest))
+
+        # rendering context
+        context = {
+            'sprite': self,
+            'common_class': iconizr.options['css-common'],
+            'sprite_relpath':
+                os.path.relpath(iconizr.tgt_sprite, iconizr.css_dir)
+                       .replace('\\', '/')
+        }
+
+        # run templating engine
+        env = jinja2.Environment(loader=jinja2.FileSystemLoader(
+                  os.path.join(os.path.dirname(__file__), 'templates')))
+
+        template = env.get_template('sprite.' + iconizr.options['css-fmt'])
+        css = template.render(context)
+
+        css_file = open(dest, 'w')
+        css_file.write(css)
+        css_file.close()

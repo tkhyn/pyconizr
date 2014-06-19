@@ -7,7 +7,7 @@ import os
 import shutil
 import tempfile
 
-from svg import SVGOpt, SVGSprite
+from svg import SVGIcon, SVGSprite
 
 
 TEMP_PREFIX = 'pyconizr-'
@@ -22,8 +22,6 @@ class Iconizr(object):
         # copy the options as the instance's attributes
         self.src = options['in']
 
-        self.tgt_css = options['out']
-
         self.tgt_sprite = options['out-sprite']
         sprite_path_end = os.path.split(self.tgt_sprite)[1]
         if '.' in sprite_path_end:
@@ -33,7 +31,15 @@ class Iconizr(object):
             self.tgt_sprite = os.path.join(self.tgt_sprite,
                                            self.sprite_name)
 
-        self.css_format = options['css-fmt']
+        out = self.options['out']
+        if '.' in out:
+            out = os.path.split(out)
+            self.css_name = out[1]
+            self.css_dir = out[0]
+        else:
+            self.css_name = os.path.splitext(self.sprite_name)[0] \
+                          + '.' + self.options['css-fmt']
+            self.css_dir = out
 
         # create a temp dir
         self.temp_dir = tempfile.mkdtemp(prefix=TEMP_PREFIX)
@@ -49,7 +55,7 @@ class Iconizr(object):
             and os.path.splitext(f)[1].lower() == '.svg':
                 p_temp = os.path.join(temp_src_dir, f)
                 shutil.copy(p_src, p_temp)
-                self.icons.append(SVGOpt(p_temp))
+                self.icons.append(SVGIcon(p_temp))
 
     def clean(self):
         if os.path.exists(self.temp_dir):
@@ -73,7 +79,7 @@ class Iconizr(object):
 
         success = True
         for icon in self.icons:
-            if not icon.optimize(self.options):
+            if not icon.optimize(self):
                 success = False
 
         return success
@@ -86,7 +92,7 @@ class Iconizr(object):
         # initialise, populate and save SVG sprite
         self.sprite = SVGSprite(self.temp_sprite, self.icons)
         self.sprite.populate()
-        self.sprite.save(self.options)
+        self.sprite.save(self)
 
         return True
 
@@ -104,6 +110,7 @@ class Iconizr(object):
             return True
 
     def makeCSS(self):
+        self.sprite.makeCSS(self)
         return True
 
     def commit(self):
