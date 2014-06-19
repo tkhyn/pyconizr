@@ -1,6 +1,7 @@
 import os
 import re
 from optparse import Values
+from collections import defaultdict
 
 from lxml import etree as ET, objectify
 from scour import scour
@@ -124,6 +125,8 @@ class SVGSprite(SVGObj):
         self.xml = ET.ElementTree(self.root)
         self.width = self.height = 0
 
+        self.dim_groups = defaultdict(lambda: [])
+
     def populate(self):
         """
         Inserts all the SVGs in the sprite
@@ -153,7 +156,7 @@ class SVGSprite(SVGObj):
 
     def _add_icon(self, icon):
 
-        # position on the sprite
+        # calculate position on the sprite
         width = icon.width
         height = icon.height
 
@@ -161,6 +164,7 @@ class SVGSprite(SVGObj):
         root_attrs = {'id': icon.name,
                       'y': f2str(icon.Y)}
 
+        # change the sprite's offsets
         self.width = max(self.width, width)
         self.height += height
 
@@ -173,6 +177,9 @@ class SVGSprite(SVGObj):
             icon.root.tag = tag[i + 1:]
 
         self.root.append(icon.root)
+
+        # check dimensions to see if it fits in an existing group
+        self.dim_groups[(width, height)].append(icon)
 
     def makeCSS(self, iconizr):
 
