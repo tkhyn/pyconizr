@@ -1,6 +1,6 @@
 """
-Module that actually carries out the optimisation, spriting, conversion and CSS
-generation
+Module that actually carries out the optimisation, spriting, conversion and
+final output (css, sass, inline ...) generation
 """
 
 import os
@@ -34,12 +34,12 @@ class Iconizr(object):
         out = self.options['out']
         if '.' in out:
             out = os.path.split(out)
-            self.css_name = out[1]
-            self.css_dir = out[0]
+            self.out_name = out[1]
+            self.out_dir = out[0]
         else:
-            self.css_name = os.path.splitext(self.sprite_name)[0] \
-                          + '.' + self.options['css-fmt']
-            self.css_dir = out
+            self.out_name = os.path.splitext(self.sprite_name)[0] \
+                          + '.' + self.options['out-fmt']
+            self.out_dir = out
 
         # create a temp dir
         self.temp_dir = tempfile.mkdtemp(prefix=TEMP_PREFIX)
@@ -66,7 +66,7 @@ class Iconizr(object):
         Executes all the tasks
         """
 
-        tasks = ['optimize', 'spritize', 'makePNGs', 'makeCSS', 'commit']
+        tasks = ['optimize', 'spritize', 'makePNGs', 'makeOutput', 'commit']
         for t in tasks:
             if not getattr(self, t)():
                 return False
@@ -109,8 +109,8 @@ class Iconizr(object):
 
             return True
 
-    def makeCSS(self):
-        self.sprite.makeCSS(self)
+    def makeOutput(self):
+        self.sprite.makeOutput(self)
         return True
 
     def commit(self):

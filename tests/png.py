@@ -2,7 +2,7 @@ import os
 
 from base import PyconizrTestCase
 
-PNG_PATH = os.path.join(os.path.dirname(__file__), 'pngs')
+PNG_PATH = os.path.join(os.path.dirname(__file__), 'expected', 'pngs')
 
 
 class PNGTests(PyconizrTestCase):

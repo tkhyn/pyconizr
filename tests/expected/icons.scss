@@ -1,14 +1,16 @@
-.red_triangle, .yellow_star {
-  background-image: url(sprites/svgs.svg);
+%icongroup0 {
+  background-image: url(sprites/icons.svg);
   background-repeat: no-repeat;
   width: 32px;
   height: 32px;
 }
 
 .red_triangle {
+  @extend %icongroup0;
   background-position: 0 0;
 }
 
 .yellow_star {
+  @extend %icongroup0;
   background-position: 0 32px;
 }

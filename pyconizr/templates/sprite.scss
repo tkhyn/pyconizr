@@ -1,0 +1,46 @@
+{%- set n_groups = sprite.dim_groups.keys()|length == 1 -%}
+
+{% macro dimensions(icon) %}
+  width: {{ icon.css('width') }};
+  height: {{ icon.css('height') }};
+{% endmacro %}
+
+{#- General declaration for background and dimensions if possible -#}
+{% if common_class -%}
+.{{ common_class }}
+{%- else -%}
+{%- for i in range(n_groups) -%}
+{%- if i > 0 -%}, {% endif -%}%icongroup{{ i }}
+{%- endfor -%}
+{%- endif %} {
+  background-image: url({{ sprite_relpath }});
+  background-repeat: no-repeat;
+  {%- if n_groups == 1 %}
+  {#- only one dimension group, include dimensions here -#}
+  {{ dimensions(sprite.icons[0]) }}
+  {%- endif -%}
+}
+{% for group in sprite.dim_groups.values() -%}
+{%- set group_index=loop.index0 -%}
+{%- if group|length > 1 -%}
+{#- width and height properties can be grouped -#}
+{%- if n_groups > 1 -%}
+%icongroup{{ group_index }} {
+  {{- dimensions(sprite.icons[0]) -}}
+}
+{%- endif -%}
+{#- but positions still need to be defined individually! -#}
+{% for icon in group %}
+{{ icon.css_selector() }} {
+  @extend %icongroup{{ group_index }};
+  background-position: {{ icon.css('background-position') }};
+}
+{% endfor %}
+{%- else -%}
+{#- add positions and dimensions for the only icon of the group -#}
+{{ group[0].css_selector() }} {
+  background-position: {{ group[0].css('background-position') }};
+  {{- dimensions(group[0]) -}}
+}
+{%- endif -%}
+{%- endfor %}

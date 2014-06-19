@@ -181,18 +181,18 @@ class SVGSprite(SVGObj):
         # check dimensions to see if it fits in an existing group
         self.dim_groups[(width, height)].append(icon)
 
-    def makeCSS(self, iconizr):
+    def makeOutput(self, iconizr):
 
         # destination file
-        dest = os.path.join(iconizr.temp_dir, 'css', iconizr.css_name)
+        dest = os.path.join(iconizr.temp_dir, 'out', iconizr.out_name)
         os.makedirs(os.path.dirname(dest))
 
         # rendering context
         context = {
             'sprite': self,
-            'common_class': iconizr.options['css-common'],
+            'common_class': iconizr.options['out-class'],
             'sprite_relpath':
-                os.path.relpath(iconizr.tgt_sprite, iconizr.css_dir)
+                os.path.relpath(iconizr.tgt_sprite, iconizr.out_dir)
                        .replace('\\', '/')
         }
 
@@ -200,9 +200,9 @@ class SVGSprite(SVGObj):
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(
                   os.path.join(os.path.dirname(__file__), 'templates')))
 
-        template = env.get_template('sprite.' + iconizr.options['css-fmt'])
-        css = template.render(context)
+        template = env.get_template('sprite.' + iconizr.options['out-fmt'])
+        out = template.render(context)
 
-        css_file = open(dest, 'w')
-        css_file.write(css)
-        css_file.close()
+        out_file = open(dest, 'w')
+        out_file.write(out)
+        out_file.close()

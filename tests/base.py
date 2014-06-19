@@ -28,7 +28,8 @@ class PyconizrTestCase(TestCase):
                                param[1]['default'])
 
         self.out_dir = os.path.join(os.path.dirname(__file__), 'out')
-        options.update({'in': os.path.join(os.path.dirname(__file__), 'svgs'),
+        options.update({'in': os.path.join(os.path.dirname(__file__), 'input',
+                                           'icons'),
                         'out': self.out_dir,
                         'out-sprite': os.path.join(self.out_dir, 'sprites')})
 

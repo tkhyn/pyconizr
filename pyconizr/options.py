@@ -44,13 +44,13 @@ OPTIONS = {
         help='Generate PNG fallback sprite (and icons if out-icons is defined)'
              '[default = True]'
     )),
-    'css-fmt': (('-f'), dict(
+    'out-fmt': (('-f'), dict(
         action='store',
-        choices=('css', 'sass', 'less'),
+        choices=('css', 'sass'),
         default='css',
-        help='The output format (CSS, SASS or LESS) [default = css]'
+        help='The output format (CSS or SASS) [default = css]'
     )),
-    'css-common': (('-c'), dict(
+    'out-class': (('-c'), dict(
         action='store',
         default=None,
         help='A class name that is common to all icons [default = None]'
