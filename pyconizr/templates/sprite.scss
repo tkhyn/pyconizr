@@ -34,31 +34,28 @@ background-image: url({{ url }});
 }
 {% for group in sprite.dim_groups.values() -%}
 {%- set group_index=loop.index0 -%}
-{%- if group|length > 1 -%}
+{%- if group|length > 1 and n_groups > 1 -%}
 {#- width and height properties can be grouped -#}
-{%- if n_groups > 1 -%}
+{#- if there is only one group, it has already been done above -#}
 %icongroup{{ group_index }} {
   {{- dimensions(sprite.icons[0]) -}}
 }
 {%- endif -%}
-{#- but positions still need to be defined individually! -#}
+
+{#- now define positions, individually -#}
+
 {% for icon in group %}
 {{ icon.css_selector() }} {
+  {%- if n_groups > 1 or not common_class %}
   @extend %icongroup{{ group_index }};
+  {%- endif %}
   {%- if as_icons %}
   {{ bkg_image(icon) }}
   {%- endif %}
   background-position: {{ icon.css('background-position') }};
+  {%- if group|length == 1 %}
+  {{- dimensions(icon) -}}
+  {%- endif %}
 }
 {% endfor %}
-{%- else -%}
-{#- add positions and dimensions for the only icon of the group -#}
-{{ group[0].css_selector() }} {
-  {%- if as_icons %}
-  {{ bkg_image(group[0]) }}
-  {%- endif %}
-  background-position: {{ group[0].css('background-position') }};
-  {{- dimensions(group[0]) -}}
-}
-{%- endif -%}
 {%- endfor %}

@@ -62,3 +62,17 @@ class SCSSTests(OutputTests):
                          scss_ref_file.read().replace('.svg', '.png'))
         scss_png_file.close()
         scss_ref_file.close()
+
+
+class SCSSTestsCommon(OutputTests):
+    """
+    Generate SCSS tests with a common class for all icons
+    (Actually the CSS output should be the same)
+    """
+
+    options = {'out-fmt': 'scss', 'out-class': 'icons'}
+
+    def test_scss_common(self):
+        scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')
+        scss_ref = os.path.join(EXPECTED_PATH, 'icons-common.scss')
+        self.assertSame(scss_file, scss_ref, mode='t')
