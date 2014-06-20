@@ -90,6 +90,12 @@ try:
     import cairo
     import rsvg
 except ImportError:
-    sys.stderr('To run Pyconizr, you need to install cairo and rsvg as well as'
-               'their Python bindings. On Windows, it\'s faster to download '
-               'and install the all-in-one version of PyGTK.')
+    sys.stderr.write("""
+*********************************** WARNING ***********************************
+ To use Pyconizr\'s PNG functionalities, you need to install cairo and rsvg as
+ well as their Python bindings.
+ On Windows, it\'s easier to download and install the all-in-one version of
+ PyGTK.
+*******************************************************************************
+
+""")
