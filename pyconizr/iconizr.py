@@ -46,7 +46,8 @@ class Iconizr(object):
 
         # create a temp dir
         self.temp_dir = tempfile.mkdtemp(prefix=TEMP_PREFIX)
-        self.temp_sprite = os.path.join(self.temp_dir, self.sprite_name)
+        self.temp_sprite = os.path.join(self.temp_dir, 'sprites',
+                                        self.sprite_name)
 
         # parses the input directory and create SVG objects
         self.icons = []
@@ -93,6 +94,10 @@ class Iconizr(object):
         """
 
         # initialise, populate and save SVG sprite
+        try:
+            os.makedirs(os.path.dirname(self.temp_sprite))
+        except os.error:
+            pass
         self.sprite = SVGSprite(self.temp_sprite, self.icons)
         self.sprite.populate()
         self.sprite.save(self)
@@ -118,15 +123,33 @@ class Iconizr(object):
 
     def commit(self):
         # copy temporary files to destination
-        shutil.copy(self.temp_sprite, self.tgt_sprite)
 
-        if self.options['out-icons']:
-            # copy icons if required
+        def copy_files(from_dir, to_dir):
+            try:
+                os.makedirs(to_dir)
+            except os.error:
+                pass
+            for f in os.listdir(from_dir):
+                f = os.path.join(from_dir, f)
+                if os.path.isfile(f) \
+                and (os.path.splitext(f)[1] != '.png'
+                     or self.options['out-png']):
+                    shutil.copy(f, to_dir)
+
+        # copy main output files
+        copy_files(os.path.join(self.temp_dir, 'out'),
+                   self.out_dir)
+
+        # copy png and SVG sprites
+        copy_files(os.path.dirname(self.temp_sprite),
+                   os.path.dirname(self.tgt_sprite))
+
+        # copy individual icons if required
+        if self.options['out-icons'] != 'no':
             icons_dir = self.options['out-icons-dir']
             icons_temp_dir = os.path.join(self.temp_dir, icons_dir)
-            icons_tgt_dir = os.path.join(self.tgt_sprite, icons_dir)
-            for i in os.listdir(icons_temp_dir):
-                shutil.copy(os.path.join(icons_temp_dir, i),
-                            os.path.join(icons_tgt_dir, i))
+            icons_tgt_dir = os.path.join(os.path.dirname(self.tgt_sprite),
+                                         icons_dir)
+            copy_files(icons_temp_dir, icons_tgt_dir)
 
         return True
