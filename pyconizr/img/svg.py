@@ -191,12 +191,23 @@ class SVGSprite(SVGObj):
 
     def makeOutput(self, iconizr):
 
-        # create Jinja2 environment and load template
-        env = jinja2.Environment(loader=jinja2.FileSystemLoader(
-                  os.path.join(os.path.dirname(__file__), '..', 'templates')))
+        out_type = iconizr.options['out']
 
-        template_path = 'sprite.' + iconizr.options['out-fmt']
-        template = env.get_template(template_path)
+        if out_type == 'no':
+            return True
+
+        if out_type in ('css', 'scss'):
+            # predefined output type, load built-in template
+            templates_dir = os.path.join(os.path.dirname(__file__),
+                                         '..', 'templates')
+            template_name = 'sprite.' + out_type
+        else:
+            templates_dir = os.path.dirname(out_type)
+            template_name = os.path.split(out_type)[1]
+
+        # create Jinja2 environment and load template
+        env = jinja2.Environment(loader=jinja2.FileSystemLoader(templates_dir))
+        template = env.get_template(template_name)
 
         # determine target outputs to generate
         dests = ['']  # default = svg sprite only
@@ -220,7 +231,7 @@ class SVGSprite(SVGObj):
         out_name = os.path.splitext(iconizr.out_name)[0]
         out_ext = os.path.splitext(iconizr.out_name)[1]
         if not out_ext:
-            out_ext = os.path.splitext(template_path)[1]
+            out_ext = os.path.splitext(template_name)[1]
 
         for dest in dests:
             # generate rendering context

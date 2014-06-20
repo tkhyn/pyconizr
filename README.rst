@@ -63,6 +63,13 @@ in, -i
    Defaults to the current working directory.
 
 out, -o
+   The output type. Can be:
+     - css: for CSS output [default]\n'
+     - scss: for SASS output\n'
+     - no: no output (to simply generate a sprite)\n'
+     - a path to a custom Jinja2_ template file for a 100% custom output
+
+out-path, -p
    The output path for the generated CSS/SASS/LESS file. The directory will be
    created if it does not already exist.
    Defaults to the current working directory.
@@ -72,11 +79,6 @@ out-sprite, -s
    if it does not already exist.
    Defaults to a 'sprite' directory in the current working directory.
 
-out-fmt, -f
-   The format to use for the CSS/SASS/LESS file. Must be a string equal to
-   'css', 'sass' or 'less'.
-   Defaults to 'css'.
-
 
 
 .. |copyright| unicode:: 0xA9
@@ -84,3 +86,4 @@ out-fmt, -f
 .. _Iconizr: https://github.com/jkphl/iconizr
 .. _grunt-iconizr: https://github.com/jkphl/grunt-iconizr
 .. _scour: https://github.com/oberstet/scour
+.. _Jinja2: http://jinja.pocoo.org

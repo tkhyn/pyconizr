@@ -47,7 +47,7 @@ class SCSSTests(OutputTests):
     Generate SCSS files with default settings
     """
 
-    options = {'out-fmt': 'scss'}
+    options = {'out': 'scss'}
 
     def test_make_scss(self):
         scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')
@@ -70,7 +70,7 @@ class SCSSTestsCommon(OutputTests):
     (Actually the CSS output should be the same)
     """
 
-    options = {'out-fmt': 'scss', 'out-class': 'icons'}
+    options = {'out': 'scss', 'out-class': 'icons'}
 
     def test_scss_common(self):
         scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')

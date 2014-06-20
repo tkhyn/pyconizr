@@ -15,7 +15,16 @@ OPTIONS = {
         default=_cwd,
         help='Source directory [default = cwd]'
     )),
-    'out-path': (('-o'), dict(
+    'out': (('-o'), dict(
+        action='store',
+        default='css',
+        help='The desired predefined output type, can be:\n'
+             '- css: for CSS output [default]\n'
+             '- scss: for SASS output\n'
+             '- no: no output (to simply generate a sprite)\n'
+             '- a path to a custom jinja2 template file'
+    )),
+    'out-path': (('-p'), dict(
         action='store',
         default=os.path.join(_cwd, 'out'),
         help='Output file name or directory [default = out]'
@@ -51,12 +60,6 @@ OPTIONS = {
         default=False,
         help='Do not generate any output file and generate data URIs instead '
              '[default = False]'
-    )),
-    'out-fmt': (('-f'), dict(
-        action='store',
-        choices=('css', 'sass'),
-        default='css',
-        help='The output format (CSS or SASS) [default = css]'
     )),
     'out-class': (('-c'), dict(
         action='store',
