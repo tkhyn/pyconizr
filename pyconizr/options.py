@@ -23,14 +23,16 @@ OPTIONS = {
     'out-sprite': (('-s'), dict(
         action='store',
         default=os.path.join(_cwd, 'sprites'),
-        help='SVG and PNG sprite output directory or filename '
+        help='SVG and/or PNG sprite output directory or filename '
              '[default = cwd/sprites]'
     )),
     'out-icons': ((), dict(
-        action='store_true',
-        default=False,
-        help='Should individual (optimised) icons be generated? '
-             '[default = False]'
+        action='store',
+        choices=('no', 'also', 'only'),
+        default='no',
+        help='Should individual (optimised) icons be generated as well '
+             '(also), instead of the sprite (only) or not at all (no)?'
+             '[default = no]'
     )),
     'out-icons-dir': ((), dict(
         action='store',
@@ -41,8 +43,14 @@ OPTIONS = {
     'out-png': ((), dict(
         action='store_true',
         default=True,
-        help='Generate PNG fallback sprite (and icons if out-icons is defined)'
+        help='Generate PNG fallback sprite (or icons if out-icons is True) '
              '[default = True]'
+    )),
+    'out-data': ((), dict(
+        action='store_true',
+        default=False,
+        help='Do not generate any output file and generate data URIs instead '
+             '[default = False]'
     )),
     'out-fmt': (('-f'), dict(
         action='store',

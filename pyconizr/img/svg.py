@@ -7,7 +7,9 @@ from lxml import etree as ET, objectify
 from scour import scour
 import jinja2
 
-from helpers import parseDim, f2str
+from ..helpers import parseDim, f2str
+
+from base import Image
 from png import PNGfromSVG
 
 
@@ -19,26 +21,41 @@ scour.unwanted_ns.extend([
 ])
 
 
-class SVGObj(object):
+class SVGObj(Image):
     """
     Base class for SVG objects
     """
 
-    def __init__(self, path):
-        self.path = path
-        self.name = os.path.splitext(os.path.split(path)[1])[0]
+    def __init(self, path):
+        super(SVGObj, self).__init__(path)
+        self.xml = self.root = None
+        self.png = None
 
     def save(self, iconizr):
-
         # default xml_declaration setting
         strip = iconizr.options['strip_xml_prolog']
         xml_dec = None if strip is None else not strip
         # write XML to file
         self.xml.write(self.path, xml_declaration=xml_dec)
 
+    def optimize(self, iconizr):
+
+        f = open(self.path, 'r')
+        input_str = f.read()
+        f.close()
+
+        svg_opt = scour.scourString(input_str, Values(iconizr.options))
+
+        # update XML tree
+        self.root = ET.fromstring(svg_opt)
+        self.xml._setroot(self.root)
+
+        self.save(iconizr)
+
     def makePNG(self):
-        self.png = PNGfromSVG(self.path)
+        self.png = PNGfromSVG(self)
         self.png.convert()
+        return True
 
 
 class SVGIcon(SVGObj):
@@ -50,7 +67,7 @@ class SVGIcon(SVGObj):
         super(SVGIcon, self).__init__(path)
         self.xml = ET.parse(self.path)
         self.root = self.xml.getroot()
-        self.png = PNGfromSVG(self.path)
+        self.png = PNGfromSVG(self)
 
         # extract dimensions
         for dim in ('width', 'height'):
@@ -84,22 +101,6 @@ class SVGIcon(SVGObj):
         # position initialisation
         self.X = self.Y = 0
 
-    def optimize(self, iconizr):
-
-        f = open(self.path, 'r')
-        input_str = f.read()
-        f.close()
-
-        svg_opt = scour.scourString(input_str, Values(iconizr.options))
-
-        # update XML tree
-        self.root = ET.fromstring(svg_opt)
-        self.xml._setroot(self.root)
-
-        self.save(iconizr)
-
-        return True
-
     def css_selector(self):
         return '.' + self.name
 
@@ -123,7 +124,6 @@ class SVGSprite(SVGObj):
         self.icons = icons
         self.root = ET.Element('svg')
         self.xml = ET.ElementTree(self.root)
-        self.width = self.height = 0
 
         self.dim_groups = defaultdict(lambda: [])
 
@@ -183,26 +183,66 @@ class SVGSprite(SVGObj):
 
     def makeOutput(self, iconizr):
 
-        # destination file
-        dest = os.path.join(iconizr.temp_dir, 'out', iconizr.out_name)
-        os.makedirs(os.path.dirname(dest))
-
-        # rendering context
-        context = {
-            'sprite': self,
-            'common_class': iconizr.options['out-class'],
-            'sprite_relpath':
-                os.path.relpath(iconizr.tgt_sprite, iconizr.out_dir)
-                       .replace('\\', '/')
-        }
-
-        # run templating engine
+        # create Jinja2 environment and load template
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(
-                  os.path.join(os.path.dirname(__file__), 'templates')))
+                  os.path.join(os.path.dirname(__file__), '..', 'templates')))
 
-        template = env.get_template('sprite.' + iconizr.options['out-fmt'])
-        out = template.render(context)
+        template_path = 'sprite.' + iconizr.options['out-fmt']
+        template = env.get_template(template_path)
 
-        out_file = open(dest, 'w')
-        out_file.write(out)
-        out_file.close()
+        # determine target outputs to generate
+        dests = ['']  # default = svg sprite only
+
+        if iconizr.options['out-png']:
+            dests.append('png')
+
+        if iconizr.options['out-data']:
+            dests = ['-'.join(d, 'data') for d in dests]
+
+        out_icons = iconizr.options['out-icons']
+        if out_icons != 'no':
+            icons_dests = ['-'.join(d, 'icons') for d in dests]
+            if out_icons == 'also':
+                dests.extends(icons_dests)
+            elif out_icons == 'only':
+                dests = icons_dests
+
+        out_dir = os.path.join(iconizr.temp_dir, 'out')
+        os.makedirs(out_dir)
+        out_name = os.path.splitext(iconizr.out_name)[0]
+        out_ext = os.path.splitext(iconizr.out_name)[1]
+        if not out_ext:
+            out_ext = os.path.splitext(template_path)[1]
+
+        for dest in dests:
+            # generate rendering context
+            context = {
+                'sprite': self,
+                'common_class': iconizr.options['out-class'],
+            }
+
+            if 'icons' in dest:
+                context['as_icons'] = True
+                context['url_dir'] = \
+                    os.path.relpath(iconizr.tgt_icons_dir, iconizr.out_dir) \
+                           .replace('\\', '/')
+            else:
+                context['url_dir'] = \
+                    os.path.relpath(os.path.dirname(iconizr.tgt_sprite),
+                                    iconizr.out_dir).replace('\\', '/')
+
+            if 'png' in dest:
+                context['png'] = True
+
+            if 'data' in dest:
+                context['data'] = True
+
+            # generate output file content
+            out = template.render(context)
+
+            # save file
+            filename = ('-'.join((out_name, dest)) if dest else out_name) \
+                     + out_ext
+            out_file = open(os.path.join(out_dir, filename), 'w')
+            out_file.write(out)
+            out_file.close()

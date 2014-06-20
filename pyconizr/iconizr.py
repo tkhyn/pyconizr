@@ -7,7 +7,7 @@ import os
 import shutil
 import tempfile
 
-from svg import SVGIcon, SVGSprite
+from img.svg import SVGIcon, SVGSprite
 
 
 TEMP_PREFIX = 'pyconizr-'
@@ -37,9 +37,12 @@ class Iconizr(object):
             self.out_name = out[1]
             self.out_dir = out[0]
         else:
-            self.out_name = os.path.splitext(self.sprite_name)[0] \
-                          + '.' + self.options['out-fmt']
+            self.out_name = os.path.splitext(self.sprite_name)[0]
             self.out_dir = out
+
+        # icons dir
+        self.tgt_icons_dir = os.path.join(os.path.dirname(self.tgt_sprite),
+                                          options['out-icons-dir'])
 
         # create a temp dir
         self.temp_dir = tempfile.mkdtemp(prefix=TEMP_PREFIX)
