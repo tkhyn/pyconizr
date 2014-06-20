@@ -10,7 +10,7 @@ def _iconize(**options):
     iconizr = Iconizr(**options)
 
     try:
-        result = iconizr.run()
+        result = iconizr.iconize()
         raise Exception
     except Exception, e:
         raise e
