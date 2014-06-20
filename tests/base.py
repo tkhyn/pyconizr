@@ -30,7 +30,7 @@ class PyconizrTestCase(TestCase):
         self.out_dir = os.path.join(os.path.dirname(__file__), 'out')
         options.update({'in': os.path.join(os.path.dirname(__file__), 'input',
                                            'icons'),
-                        'out': self.out_dir,
+                        'out-path': self.out_dir,
                         'out-sprite': os.path.join(self.out_dir, 'sprites')})
 
         self.iconizr = Iconizr(**options)

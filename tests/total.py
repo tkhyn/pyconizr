@@ -21,7 +21,7 @@ class DefaultTotalTests(TotalTests):
     options = {}
 
     def test_generate_files(self):
-        out_dir = self.iconizr.options['out']
+        out_dir = self.iconizr.options['out-path']
         self.assertListEqual(os.listdir(out_dir),
                              ['icons-png.css', 'icons.css', 'sprites'])
         self.assertListEqual(os.listdir(os.path.join(out_dir, 'sprites')),

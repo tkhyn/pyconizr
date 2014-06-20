@@ -15,10 +15,10 @@ OPTIONS = {
         default=_cwd,
         help='Source directory [default = cwd]'
     )),
-    'out': (('-o'), dict(
+    'out-path': (('-o'), dict(
         action='store',
-        default=os.path.join(_cwd, 'css'),
-        help='CSS file name or output directory [default = cwd/css]'
+        default=os.path.join(_cwd, 'out'),
+        help='Output file name or directory [default = out]'
     )),
     'out-sprite': (('-s'), dict(
         action='store',
