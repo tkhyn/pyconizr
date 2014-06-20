@@ -12,8 +12,14 @@ class Image(object):
     def get_dimensions(self):
         return self.width, self.height
 
-    def get_dataURI(self):
+    def data_type(self):
+        raise NotImplementedError
+
+    def encoded_URI(self):
+        raise NotImplementedError
+
+    def data_URI(self):
         """
         Returns the data URI for the image
         """
-        return ''
+        return 'data:image/%s,%s' % (self.data_type(), self.encodedURI())

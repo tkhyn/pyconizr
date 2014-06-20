@@ -8,9 +8,9 @@
 {%- macro bkg_image(icon) -%}
 {%- set icon=icon.png if png else icon -%}
 {%- if data -%}
-	{%- set url=icon.get_dataURI() -%}
+  {%- set url=icon.data_URI() -%}
 {%- else -%}
-	{%- set url=url_dir + '/' + icon.filename -%}
+  {%- set url=url_dir + '/' + icon.filename -%}
 {%- endif -%}
 background-image: url({{ url }});
 {%- endmacro -%}

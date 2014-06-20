@@ -2,6 +2,7 @@ import os
 import re
 from optparse import Values
 from collections import defaultdict
+import urllib
 
 from lxml import etree as ET, objectify
 from scour import scour
@@ -56,6 +57,13 @@ class SVGObj(Image):
         self.png = PNGfromSVG(self)
         self.png.convert()
         return True
+
+    def data_type(self):
+        return 'svg+xml'
+
+    def encoded_URI(self):
+        return urllib.quote(open(self.path, 'r').read().encode('utf-8'),
+                            safe='~()*!.\'')
 
 
 class SVGIcon(SVGObj):

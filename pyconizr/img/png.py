@@ -1,4 +1,5 @@
 import os
+import urllib
 
 import cairo
 import rsvg
@@ -38,6 +39,12 @@ class PNGfromSVG(Image):
         self.scale = scale
 
         self.surf = None
+
+    def data_type(self):
+        return 'png;base64'
+
+    def encoded_URI(self):
+        return urllib.quote(open(self.path, 'rb').read().encode('base64'))
 
     def convert(self, force=True):
 
