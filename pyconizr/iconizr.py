@@ -6,6 +6,7 @@ final output (css, sass, inline ...) generation
 import os
 import shutil
 import tempfile
+from fnmatch import fnmatch
 
 from img.svg import SVGIcon, SVGSprite
 
@@ -20,14 +21,27 @@ class Iconizr(object):
         self.options = options
 
         # copy the options as the instance's attributes
-        self.src = options['in']
+        self.src = os.path.abspath(options['in'])
+
+        if os.path.isdir(self.src):
+            self.src_dir = self.src
+            self.src_wildcard = '*'
+        else:
+            split = os.path.split(self.src)
+            self.src_dir = split[0]
+            self.src_wildcard = split[1]
+
+            if not os.path.isdir(self.src_dir):
+                raise ValueError(
+                    'The specified input directory does not exist: %s'
+                    % self.src_dir)
 
         self.tgt_sprite = options['out-sprite']
         sprite_path_end = os.path.split(self.tgt_sprite)[1]
         if '.' in sprite_path_end:
             self.sprite_name = os.path.splitext(sprite_path_end)
         else:
-            self.sprite_name = os.path.split(self.src)[1].strip('/\\') + '.svg'
+            self.sprite_name = os.path.split(self.src_dir)[1] + '.svg'
             self.tgt_sprite = os.path.join(self.tgt_sprite,
                                            self.sprite_name)
 
@@ -53,9 +67,10 @@ class Iconizr(object):
         self.icons = []
         temp_src_dir = os.path.join(self.temp_dir, options['out-icons-dir'])
         os.makedirs(temp_src_dir)
-        for f in os.listdir(self.src):
-            p_src = os.path.join(self.src, f)
+        for f in os.listdir(self.src_dir):
+            p_src = os.path.join(self.src_dir, f)
             if os.path.isfile(p_src) \
+            and fnmatch(f, self.src_wildcard) \
             and os.path.splitext(f)[1].lower() == '.svg':
                 p_temp = os.path.join(temp_src_dir, f)
                 shutil.copy(p_src, p_temp)

@@ -59,7 +59,10 @@ shortcut), or should be provided as keyword arguments to the ``iconize``
 function.
 
 in, -i
-   The input path containing the SVG files to generate the sprite from.
+   The input directory or files (as a wildcard) that should be used to generate
+   the sprite.
+   Only valid SVG files will be taken into account, so there is no need to add
+   a \*.svg wildcard ("dir/\*" will only include the \*.svg files in dir).
    Defaults to the current working directory.
 
 out, -o

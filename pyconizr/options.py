@@ -13,7 +13,7 @@ OPTIONS = {
     'in': (('-i'), dict(
         action='store',
         default=_cwd,
-        help='Source directory [default = cwd]'
+        help='Source files, as a directory or wildcard [default = cwd/*]'
     )),
     'out': (('-o'), dict(
         action='store',
