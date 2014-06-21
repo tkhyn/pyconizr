@@ -52,6 +52,7 @@ class SVGObj(Image):
         self.xml._setroot(self.root)
 
         self.save(iconizr)
+        return True
 
     def makePNG(self):
         self.png = PNGfromSVG(self)

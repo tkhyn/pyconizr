@@ -11,7 +11,6 @@ def _iconize(**options):
 
     try:
         result = iconizr.iconize()
-        raise Exception
     except Exception, e:
         raise e
     finally:
