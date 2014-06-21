@@ -45,7 +45,7 @@ class Iconizr(object):
             self.tgt_sprite = os.path.join(self.tgt_sprite,
                                            self.sprite_name)
 
-        out = self.options['out-path']
+        out = os.path.abspath(self.options['out-path'])
         if '.' in out:
             out = os.path.split(out)
             self.out_name = out[1]
