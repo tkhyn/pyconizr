@@ -6,7 +6,7 @@ final output (css, sass, inline ...) generation
 import os
 import shutil
 import tempfile
-from fnmatch import fnmatch
+import glob
 
 from img.svg import SVGIcon, SVGSprite
 
@@ -20,31 +20,64 @@ class Iconizr(object):
 
         self.options = options
 
-        # copy the options as the instance's attributes
-        self.src = os.path.abspath(options['in'])
+        # create a temporary directory
+        self.temp_dir = tempfile.mkdtemp(prefix=TEMP_PREFIX)
 
-        if os.path.isdir(self.src):
-            self.src_dir = self.src
-            self.src_wildcard = '*'
-        else:
-            split = os.path.split(self.src)
-            self.src_dir = split[0]
-            self.src_wildcard = split[1]
-
-            if not os.path.isdir(self.src_dir):
-                raise ValueError(
-                    'The specified input directory does not exist: %s'
-                    % self.src_dir)
-
+        # retrieve output sprite name and path
         self.tgt_sprite = options['out-sprite']
         sprite_path_end = os.path.split(self.tgt_sprite)[1]
         if '.' in sprite_path_end:
-            self.sprite_name = os.path.splitext(sprite_path_end)
+            # out-sprite is a filename
+            self.sprite_name = os.path.splitext(sprite_path_end)[0]
         else:
-            self.sprite_name = os.path.split(self.src_dir)[1] + '.svg'
-            self.tgt_sprite = os.path.join(self.tgt_sprite,
-                                           self.sprite_name)
+            # out-sprite is a directory name, the sprite name and path will
+            # be set on input files parsing
+            self.sprite_name = None
 
+        # parse input glob pattern(s) to collect icons
+        globs = options['in'].split(',')
+
+        self.icons = []
+        temp_src_dir = os.path.join(self.temp_dir, options['out-icons-dir'])
+        os.makedirs(temp_src_dir)
+
+        for g in globs:
+            matches = glob.glob(g)
+            if len(matches) == 1 and os.path.isdir(matches[0]):
+                # the glob pattern refered to a single directory, we should
+                # understand it as directory/*
+                matches = glob.glob(os.path.join(g, '*'))
+            for m in matches:
+                name, ext = os.path.splitext(m)
+                name = os.path.split(name)[1]
+                if os.path.isfile(m) and ext == '.svg':
+                    # add file to icons
+                    p_temp = os.path.join(temp_src_dir, name + ext)
+                    i = 0
+                    while os.path.exists(p_temp):
+                        p_temp = os.path.join(temp_src_dir,
+                                              name + '-' + str(i) + ext)
+                        i += 1
+                    shutil.copy(m, p_temp)
+                    self.icons.append(SVGIcon(p_temp))
+                if not self.sprite_name:
+                    # generate a sprite name and path from the first parsed
+                    # file
+                    self.sprite_name = os.path.split(os.path.dirname(m))[-1] \
+                                     + '.svg'
+                    self.tgt_sprite = os.path.join(self.tgt_sprite,
+                                                   self.sprite_name)
+
+        if not self.icons:
+            self.clean()
+            raise Exception('No icon files found mathing pattern "%s"'
+                            % options['in'])
+
+        # create the temp sprite
+        self.temp_sprite = os.path.join(self.temp_dir, 'sprites',
+                                        self.sprite_name)
+
+        # create output directory
         out = os.path.abspath(self.options['out-path'])
         if '.' in out:
             out = os.path.split(out)
@@ -60,24 +93,6 @@ class Iconizr(object):
         # icons dir
         self.tgt_icons_dir = os.path.join(os.path.dirname(self.tgt_sprite),
                                           options['out-icons-dir'])
-
-        # create a temp dir
-        self.temp_dir = tempfile.mkdtemp(prefix=TEMP_PREFIX)
-        self.temp_sprite = os.path.join(self.temp_dir, 'sprites',
-                                        self.sprite_name)
-
-        # parses the input directory and create SVG objects
-        self.icons = []
-        temp_src_dir = os.path.join(self.temp_dir, options['out-icons-dir'])
-        os.makedirs(temp_src_dir)
-        for f in os.listdir(self.src_dir):
-            p_src = os.path.join(self.src_dir, f)
-            if os.path.isfile(p_src) \
-            and fnmatch(f, self.src_wildcard) \
-            and os.path.splitext(f)[1].lower() == '.svg':
-                p_temp = os.path.join(temp_src_dir, f)
-                shutil.copy(p_src, p_temp)
-                self.icons.append(SVGIcon(p_temp))
 
     def clean(self):
         if os.path.exists(self.temp_dir):

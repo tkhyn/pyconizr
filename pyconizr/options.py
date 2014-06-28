@@ -13,7 +13,8 @@ OPTIONS = {
     'in': (('-i'), dict(
         action='store',
         default=_cwd,
-        help='Source files, as a directory or wildcard [default = cwd/*]'
+        help='Source files, as a directory or wildcard, can be a '
+             'comma-separated list [default = cwd/*]'
     )),
     'out': (('-o'), dict(
         action='store',
@@ -39,7 +40,7 @@ OPTIONS = {
         action='store',
         default=os.path.join(_cwd, 'sprites'),
         help='SVG and/or PNG sprite output directory or filename '
-             '[default = cwd/sprites]'
+             '[default = cwd/sprites/automatic_filename.svg]'
     )),
     'out-icons': ((), dict(
         action='store',
