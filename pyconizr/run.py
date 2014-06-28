@@ -2,7 +2,7 @@ from options import OPTIONS
 from iconizr import Iconizr
 
 
-def _iconize(**options):
+def iconize(**options):
     """
     Wrapper function for the Iconizr.run method
     """
@@ -19,18 +19,6 @@ def _iconize(**options):
     return result
 
 
-def iconize(**options):
-    """
-    Public inconize function for use within python, check and set default
-    options
-    """
-
-    for o, param in OPTIONS.iteritems():
-        options.setdefault(param[1].get('dest', None)
-                           or o, param[1]['default'])
-    return _iconize(**options)
-
-
 def execute_from_cl():
     import argparse
 
@@ -43,4 +31,4 @@ def execute_from_cl():
         parser.add_argument('--' + o, *param[0], **param[1])
 
     options = vars(parser.parse_args())
-    _iconize(**options)
+    iconize(**options)
