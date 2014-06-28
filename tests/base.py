@@ -28,8 +28,9 @@ class PyconizrTestCase(TestCase):
                                param[1]['default'])
 
         self.out_dir = os.path.join(os.path.dirname(__file__), 'out')
-        options.update({'in': os.path.join(os.path.dirname(__file__), 'input',
-                                           'icons'),
+        in_path = os.path.join(os.path.dirname(__file__), 'input', 'icons')
+        options.update({'in': [os.path.join(in_path, i)
+                               for i in os.listdir(in_path)],
                         'out-path': self.out_dir,
                         'out-sprite': os.path.join(self.out_dir, 'sprites')})
 

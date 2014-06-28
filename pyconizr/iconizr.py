@@ -35,38 +35,49 @@ class Iconizr(object):
             self.sprite_name = None
 
         # parse input glob pattern(s) to collect icons
-        globs = options['in'].split(',')
+        paths = options['in']
 
         self.icons = []
         temp_src_dir = os.path.join(self.temp_dir, options['out-icons-dir'])
         os.makedirs(temp_src_dir)
 
-        for g in globs:
-            matches = glob.glob(g)
-            if len(matches) == 1 and os.path.isdir(matches[0]):
-                # the glob pattern refered to a single directory, we should
-                # understand it as directory/*
-                matches = glob.glob(os.path.join(g, '*'))
-            for m in matches:
-                name, ext = os.path.splitext(m)
-                name = os.path.split(name)[1]
-                if os.path.isfile(m) and ext == '.svg':
-                    # add file to icons
-                    p_temp = os.path.join(temp_src_dir, name + ext)
-                    i = 0
-                    while os.path.exists(p_temp):
-                        p_temp = os.path.join(temp_src_dir,
-                                              name + '-' + str(i) + ext)
-                        i += 1
-                    shutil.copy(m, p_temp)
-                    self.icons.append(SVGIcon(p_temp))
+        def make_icon(path):
+            name, ext = os.path.splitext(path)
+            name = os.path.split(name)[1]
+            if os.path.isfile(path) and ext == '.svg':
+                # add file to icons
+                p_temp = os.path.join(temp_src_dir, name + ext)
+                i = 0
+                while os.path.exists(p_temp):
+                    p_temp = os.path.join(temp_src_dir,
+                                          name + '-' + str(i) + ext)
+                    i += 1
+                shutil.copy(path, p_temp)
+                self.icons.append(SVGIcon(p_temp))
+
                 if not self.sprite_name:
                     # generate a sprite name and path from the first parsed
                     # file
-                    self.sprite_name = os.path.split(os.path.dirname(m))[-1] \
-                                     + '.svg'
-                    self.tgt_sprite = os.path.join(self.tgt_sprite,
-                                                   self.sprite_name)
+                    self.sprite_name = \
+                        os.path.split(os.path.dirname(path))[-1] + '.svg'
+                    self.tgt_sprite = \
+                        os.path.join(self.tgt_sprite, self.sprite_name)
+
+        if hasattr(paths, '__iter__'):
+            # input is an iterable (but not a string)
+            for i in paths:
+                make_icon(i)
+        else:
+            # input is a string
+            globs = paths.split(',')
+            for g in globs:
+                matches = glob.glob(g)
+                if len(matches) == 1 and os.path.isdir(matches[0]):
+                    # the glob pattern refered to a single directory, we should
+                    # understand it as directory/*
+                    matches = glob.glob(os.path.join(g, '*'))
+                for m in matches:
+                    make_icon(m)
 
         if not self.icons:
             self.clean()
