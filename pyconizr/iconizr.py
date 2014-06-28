@@ -54,6 +54,9 @@ class Iconizr(object):
             self.out_name = os.path.splitext(self.sprite_name)[0]
             self.out_dir = out
 
+        # this is the directory where output files should be generated
+        self.out_css_dir = self.options['out-css-dir'] or self.out_dir
+
         # icons dir
         self.tgt_icons_dir = os.path.join(os.path.dirname(self.tgt_sprite),
                                           options['out-icons-dir'])

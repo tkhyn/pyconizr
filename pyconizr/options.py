@@ -29,6 +29,12 @@ OPTIONS = {
         default=os.path.join(_cwd, 'out'),
         help='Output file name or directory [default = out]'
     )),
+    'out-css-dir': ((), dict(
+        action='store',
+        default=None,
+        help='The directory of the final CSS file if different from out-path '
+             '[default = out-path]'
+    )),
     'out-sprite': (('-s'), dict(
         action='store',
         default=os.path.join(_cwd, 'sprites'),

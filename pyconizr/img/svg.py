@@ -244,12 +244,12 @@ class SVGSprite(SVGObj):
             if 'icons' in dest:
                 context['as_icons'] = True
                 context['url_dir'] = \
-                    os.path.relpath(iconizr.tgt_icons_dir, iconizr.out_dir) \
-                           .replace('\\', '/')
+                    os.path.relpath(iconizr.tgt_icons_dir,
+                                    iconizr.out_css_dir).replace('\\', '/')
             else:
                 context['url_dir'] = \
                     os.path.relpath(os.path.dirname(iconizr.tgt_sprite),
-                                    iconizr.out_dir).replace('\\', '/')
+                                    iconizr.out_css_dir).replace('\\', '/')
 
             if 'png' in dest:
                 context['png'] = True
