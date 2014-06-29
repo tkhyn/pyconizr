@@ -67,6 +67,13 @@ OPTIONS = {
         default='0',
         help='Padding around the icons, in pixels. [default = 0]'
     )),
+    'layout': ((), dict(
+        action='store',
+        choices=['vertical', 'horizontal', 'diagonal'],
+        default='vertical',
+        help='The sprite layout. Can be vertical, horizontal or diagonal. '
+             '[default = vertical]'
+    )),
     'png': (('-p'), dict(
         action='store_true',
         default=True,
