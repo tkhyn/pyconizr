@@ -3,6 +3,7 @@ import re
 from optparse import Values
 from collections import defaultdict
 import urllib
+from copy import copy
 
 from lxml import etree as ET, objectify
 from scour import scour
@@ -110,6 +111,13 @@ class SVGIcon(SVGObj):
         # position initialisation
         self.X = self.Y = 0
 
+        # selector
+        self.children = []
+        self.selector = None
+
+    def get_position(self):
+        return (self.X, self.Y)
+
     def css_selector(self):
         return '.' + self.name
 
@@ -136,14 +144,14 @@ class SVGSprite(SVGObj):
 
         self.dim_groups = defaultdict(lambda: [])
 
-    def populate(self):
+    def populate(self, iconizr):
         """
         Inserts all the SVGs in the sprite
         """
         ns_map = {}
-        for icon in self.icons:
+        for icon in copy(self.icons):
             ns_map.update(icon.root.nsmap)
-            self._add_icon(icon)
+            self._add_icon(icon, iconizr)
 
         # hack to make self.root inherit namespaces, as they would be erased
         # when self.root would be added to self.xml
@@ -163,7 +171,7 @@ class SVGSprite(SVGObj):
         for k, v in attrs.iteritems():
             self.root.set(k, v)
 
-    def _add_icon(self, icon):
+    def _add_icon(self, icon, iconizr):
 
         # calculate position on the sprite
         width = icon.width
@@ -186,6 +194,20 @@ class SVGSprite(SVGObj):
             icon.root.tag = tag[i + 1:]
 
         self.root.append(icon.root)
+
+        # extract selector for compass spriting's magic selectors
+        # http://compass-style.org/help/tutorials/spriting/magic-selectors/
+        spl = icon.name.split('_')
+        if len(spl) > 1:
+            sel = spl[-1]
+            if sel in iconizr.selectors:
+                parent_name = '_'.join(spl[:-1])
+                for i in self.icons:
+                    if i.name == parent_name:
+                        icon.selector = sel
+                        i.children.append(icon)
+                        self.icons.remove(icon)
+                        return
 
         # check dimensions to see if it fits in an existing group
         self.dim_groups[(width, height)].append(icon)

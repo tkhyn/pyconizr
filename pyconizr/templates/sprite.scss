@@ -56,6 +56,15 @@ background-image: url({{ url }});
   {%- if group|length == 1 %}
   {{- dimensions(icon) -}}
   {%- endif %}
+  {%- for c_icon in icon.children %}
+  {%- set sel=c_icon.selector %}
+  &:{{ sel }}, &.{{ sprite.name }}-{{ sel }}, &.{{ sprite.name }}_{{ sel }} {
+    {%- if as_icons %}
+    {{ bkg_image(c_icon) }}
+    {%- endif %}
+    background-position: {{ c_icon.css('background-position') }};
+  }
+  {%- endfor %}
 }
 {% endfor %}
 {%- endfor %}

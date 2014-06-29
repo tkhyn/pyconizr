@@ -20,8 +20,8 @@ background-image: url({{ url }});
 .{{ common_class }}
 {%- else -%}
   {%- for icon in sprite.icons -%}
-    {{ icon.css_selector() }}
-	  {%- if not loop.last -%}, {% endif -%}
+  	{{ icon.css_selector() }}
+	{%- if not loop.last -%}, {% endif -%}
   {%- endfor %}
 {%- endif %} {
   {%- if not as_icons %}
@@ -44,11 +44,10 @@ background-image: url({{ url }});
   {{ dimensions(sprite.icons[0]) }}
 }
 {%- endif -%}
-
-{#- now define positions, individually -#}
-
+{#- now define positions, individually #}
 {% for icon in group %}
-{{ icon.css_selector() }} {
+{%- set icon_sel=icon.css_selector() -%}
+{{ icon_sel }} {
   {%- if as_icons %}
   {{ bkg_image(icon) }}
   {%- endif %}
@@ -57,5 +56,14 @@ background-image: url({{ url }});
   {{- dimensions(icon) -}}
   {%- endif %}
 }
+{% for c_icon in icon.children %}
+{%- set sel=c_icon.selector %}
+{{ icon_sel }}:{{ sel }}, {{ icon_sel }}.{{ sprite.name }}-{{ sel }}, {{ icon_sel }}.{{ sprite.name }}_{{ sel }} {
+  {%- if as_icons %}
+  {{ bkg_image(c_icon) }}
+  {%- endif %}
+  background-position: {{ c_icon.css('background-position') }};
+}
+{%- endfor %}
 {% endfor %}
 {%- endfor %}

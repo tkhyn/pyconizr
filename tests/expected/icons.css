@@ -1,14 +1,18 @@
-.red_triangle, .yellow_star {
+.red-triangle, .yellow-star {
   background-image: url(/static/sprites/icons.svg);
   background-repeat: no-repeat;
   width: 32px;
   height: 32px;
 }
 
-.red_triangle {
+.red-triangle {
   background-position: 0 0;
 }
 
-.yellow_star {
+.yellow-star {
   background-position: 0 32px;
+}
+
+.yellow-star:hover, .yellow-star.icons-hover, .yellow-star.icons_hover {
+  background-position: 0 64px;
 }

@@ -91,35 +91,42 @@ render, -r
 static-url
    The absolute URL to the static directory. Used for links towards sprites and
    icons files from within the generated outputs.
-   Defaults to '/static'
+   Defaults to ``/static``
 
 sprites-url
    The absolute or relative (to static-url) URL to the sprites directory. Used
    for links towards sprite files.
-   Defaults to 'sprites'
+   Defaults to ``sprites``
 
 icons-url
    The absolute or relative (to static-url) URL to the icons directory. Used
    for links towards individual icons. Not used if out-icons is not defined.
-   Defaults to 'icons'
+   Defaults to ``icons``
 
 class
    A common CSS class for all the icons in the sprite.
-   Default to None.
+   Default to ``None``.
 
 png
    Should png fallbacks be generated?
-   Defaults to True
+   Defaults to ``True``
 
 data
    Should SVG and PNG images be linked as dataURIs? Remember that a page loads
    faster (thanks to caching vs dataURI decoding) if the CSS does not use
    dataURIs.
-   Defaults to False
+   Defaults to ``False``
+
+selectors
+   Comma-separated list of selectors that can be embedded in icons filenames,
+   using the ``_`` separator. For example, there a file name_hover.svg will be
+   taken as the hovered version of the icon name.
+   Defaults to ``hover,target,active``
 
 scour-*
    All the options from scour_, using the 'scour-' prefix. 'strip-xml-prolog'
    becomes 'scour-strip-xml-prolog'
+   Defaults to best possible optimisation parameters for sprite generation.
 
 
 .. |copyright| unicode:: 0xA9

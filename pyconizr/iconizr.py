@@ -118,6 +118,9 @@ class Iconizr(object):
         if self.render in ('0', 'False', 'None'):
             self.render = None
 
+        # valid selectors that can be embedded in filenames
+        self.selectors = options['selectors'].split(',')
+
     def clean(self):
         if os.path.exists(self.temp_dir):
             shutil.rmtree(self.temp_dir)
@@ -156,7 +159,7 @@ class Iconizr(object):
         except os.error:
             pass
         self.sprite = SVGSprite(self.temp_sprite, self.icons)
-        self.sprite.populate()
+        self.sprite.populate(self)
         self.sprite.save(self)
 
         return True

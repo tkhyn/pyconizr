@@ -7,7 +7,7 @@ class SpritizeTests(PyconizrTestCase):
 
     options = {}
 
-    def test_spritize_2_files(self):
+    def test_spritize_3_files(self):
 
         # optimize first, so that we have clean SVG
         self.iconizr.optimize()
@@ -18,13 +18,15 @@ class SpritizeTests(PyconizrTestCase):
         sprite_root = ET.parse(self.iconizr.temp_sprite).getroot()
         self.assertEqual(sprite_root.tag, self.nstag('svg'))
         self.assertEqual(sprite_root.get('width'), '32px')
-        self.assertEqual(sprite_root.get('height'), '64px')
-        self.assertEqual(sprite_root.get('viewBox'), '0 0 32 64')
+        self.assertEqual(sprite_root.get('height'), '96px')
+        self.assertEqual(sprite_root.get('viewBox'), '0 0 32 96')
 
         for icon in sprite_root:
-            if icon.get('id') == 'red_triangle':
+            if icon.get('id') == 'red-triangle':
                 self.assertEqual(icon.get('y'), '0')
-            elif icon.get('id') == 'yellow_star':
+            elif icon.get('id') == 'yellow-star':
                 self.assertEqual(icon.get('y'), '32')
+            elif icon.get('id') == 'yellow-star_hover':
+                self.assertEqual(icon.get('y'), '64')
             else:
                 self.fail('Invalid icon id: %s' % icon.get('id'))

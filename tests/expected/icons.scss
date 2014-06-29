@@ -5,12 +5,15 @@
   height: 32px;
 }
 
-.red_triangle {
+.red-triangle {
   @extend %icongroup0;
   background-position: 0 0;
 }
 
-.yellow_star {
+.yellow-star {
   @extend %icongroup0;
   background-position: 0 32px;
+  &:hover, &.icons-hover, &.icons_hover {
+    background-position: 0 64px;
+  }
 }

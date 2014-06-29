@@ -79,6 +79,12 @@ OPTIONS = {
         default=None,
         help='A class name that is common to all icons [default = None]'
     )),
+    'selectors': ((), dict(
+        action='store',
+        default='hover,target,active,',
+        help='The selectors that can be embedded into filenames. '
+             '[default = hover,target,active]'
+    ))
 }
 
 
