@@ -192,19 +192,17 @@ class SVGSprite(SVGObj):
 
     def makeOutput(self, iconizr):
 
-        out_type = iconizr.options['render']
-
-        if out_type == 'no':
+        if not iconizr.render:
             return True
 
-        if out_type in ('css', 'scss'):
+        if iconizr.render in ('css', 'scss'):
             # predefined output type, load built-in template
             templates_dir = os.path.join(os.path.dirname(__file__),
                                          '..', 'templates')
-            template_name = 'sprite.' + out_type
+            template_name = 'sprite.' + iconizr.render
         else:
-            templates_dir = os.path.dirname(out_type)
-            template_name = os.path.split(out_type)[1]
+            templates_dir = os.path.dirname(iconizr.render)
+            template_name = os.path.split(iconizr.render)[1]
 
         # create Jinja2 environment and load template
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(templates_dir))

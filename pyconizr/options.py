@@ -38,9 +38,9 @@ OPTIONS = {
         action='store',
         default='css',
         help='How the output should be rendered. Can be:\n'
-             '- css: for CSS output [default]\n'
-             '- scss: for SASS output\n'
-             '- no: no output (to simply generate a sprite)\n'
+             '- "css": for CSS output [default]\n'
+             '- "scss": for SASS output\n'
+             '- blank, "0", "False" or "None": no output (sprite only)\n'
              '- a path to a custom jinja2 template file'
     )),
     'static-url': ((), dict(

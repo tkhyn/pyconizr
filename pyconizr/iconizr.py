@@ -113,6 +113,11 @@ class Iconizr(object):
             self.out_name = os.path.splitext(self.sprite_name)[0]
             self.out_dir = out
 
+        # render mode
+        self.render = options['render']
+        if self.render in ('0', 'False', 'None'):
+            self.render = None
+
     def clean(self):
         if os.path.exists(self.temp_dir):
             shutil.rmtree(self.temp_dir)
