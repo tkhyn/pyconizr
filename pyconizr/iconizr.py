@@ -24,6 +24,14 @@ class Iconizr(object):
             options.setdefault(param[1].get('dest', None) or o,
                                param[1].get('default', None))
 
+        for url in ('sprites', 'icons'):
+            opt = options[url + '-url']
+            if opt.startswith('/') or ':' in opt:
+                return
+            else:
+                opt = options['static-url'] + '/' + opt
+            options[url + '-url'] = opt
+
         self.options = options
 
         # create a temporary directory
@@ -44,7 +52,8 @@ class Iconizr(object):
         paths = options['in']
 
         self.icons = []
-        temp_src_dir = os.path.join(self.temp_dir, options['out-icons-dir'])
+        temp_src_dir = os.path.join(self.temp_dir,
+                                    options['out-icons'] or 'icons')
         os.makedirs(temp_src_dir)
 
         def make_icon(path):
@@ -94,8 +103,8 @@ class Iconizr(object):
         self.temp_sprite = os.path.join(self.temp_dir, 'sprites',
                                         self.sprite_name)
 
-        # create output directory
-        out = os.path.abspath(self.options['out-path'])
+        # extract output directory and name
+        out = os.path.abspath(self.options['out'])
         if '.' in out:
             out = os.path.split(out)
             self.out_name = out[1]
@@ -103,13 +112,6 @@ class Iconizr(object):
         else:
             self.out_name = os.path.splitext(self.sprite_name)[0]
             self.out_dir = out
-
-        # this is the directory where output files should be generated
-        self.out_css_dir = self.options['out-css-dir'] or self.out_dir
-
-        # icons dir
-        self.tgt_icons_dir = os.path.join(os.path.dirname(self.tgt_sprite),
-                                          options['out-icons-dir'])
 
     def clean(self):
         if os.path.exists(self.temp_dir):
@@ -156,7 +158,7 @@ class Iconizr(object):
 
     def makePNGs(self):
 
-        if self.options['out-png']:
+        if self.options['png']:
             # make sprite png
             self.sprite.makePNG()
 
@@ -183,7 +185,7 @@ class Iconizr(object):
                 f = os.path.join(from_dir, f)
                 if os.path.isfile(f) \
                 and (os.path.splitext(f)[1] != '.png'
-                     or self.options['out-png']):
+                     or self.options['png']):
                     shutil.copy(f, to_dir)
 
         # copy main output files
@@ -195,8 +197,8 @@ class Iconizr(object):
                    os.path.dirname(self.tgt_sprite))
 
         # copy individual icons if required
-        if self.options['out-icons'] != 'no':
-            icons_dir = self.options['out-icons-dir']
+        if self.options['out-icons']:
+            icons_dir = self.options['out-icons']
             icons_temp_dir = os.path.join(self.temp_dir, icons_dir)
             icons_tgt_dir = os.path.join(os.path.dirname(self.tgt_sprite),
                                          icons_dir)

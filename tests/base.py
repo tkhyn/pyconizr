@@ -4,7 +4,6 @@ from copy import copy
 from unittest import TestCase
 
 from pyconizr.iconizr import Iconizr
-from pyconizr.options import OPTIONS
 
 __test__ = False
 __unittest = True
@@ -23,15 +22,12 @@ class PyconizrTestCase(TestCase):
     def setUp(self):
 
         options = copy(self.options)
-        for o, param in OPTIONS.iteritems():
-            options.setdefault(param[1].get('dest', None) or o,
-                               param[1]['default'])
 
         self.out_dir = os.path.join(os.path.dirname(__file__), 'out')
         in_path = os.path.join(os.path.dirname(__file__), 'input', 'icons')
         options.update({'in': [os.path.join(in_path, i)
                                for i in os.listdir(in_path)],
-                        'out-path': self.out_dir,
+                        'out': self.out_dir,
                         'out-sprite': os.path.join(self.out_dir, 'sprites')})
 
         self.iconizr = Iconizr(**options)

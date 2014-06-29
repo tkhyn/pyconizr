@@ -66,22 +66,60 @@ in, -i
    Defaults to the current working directory.
 
 out, -o
-   The output type. Can be:
+   The output path for the generated output file (CSS, SASS...). The directory
+   will be created if it does not already exist.
+   Defaults to the 'out' directory in the current working directory.
+
+out-sprite, -s
+   The output path for the SVG and PNG sprites. The directory will be created
+   if it does not already exist.
+   Defaults to the 'sprites' directory in the output directory.
+
+out-icons
+   The output path for the optimized SVG and rasterized PNG individual icons.
+   If left blank, no icons will be generated. If defined, a supplementary
+   output file will be generated with a '-icons' suffix.
+   Defaults to blank (no icons generated).
+
+render, -r
+   How the output should be rendered. Can be:
      - css: for CSS output [default]\n'
      - scss: for SASS output\n'
      - no: no output (to simply generate a sprite)\n'
      - a path to a custom Jinja2_ template file for a 100% custom output
 
-out-path, -p
-   The output path for the generated CSS/SASS/LESS file. The directory will be
-   created if it does not already exist.
-   Defaults to the current working directory.
+static-url
+   The absolute URL to the static directory. Used for links towards sprites and
+   icons files from within the generated outputs.
+   Defaults to '/static'
 
-out-sprite, -s
-   The output path for the SVG and PNG sprites. The directory will be created
-   if it does not already exist.
-   Defaults to a 'sprite' directory in the current working directory.
+sprites-url
+   The absolute or relative (to static-url) URL to the sprites directory. Used
+   for links towards sprite files.
+   Defaults to 'sprites'
 
+icons-url
+   The absolute or relative (to static-url) URL to the icons directory. Used
+   for links towards individual icons. Not used if out-icons is not defined.
+   Defaults to 'icons'
+
+class
+   A common CSS class for all the icons in the sprite.
+   Default to None.
+
+png
+   Should png fallbacks be generated?
+   Defaults to True
+
+data
+   Should SVG and PNG images be linked as dataURIs? Remember that a page loads
+   faster (thanks to caching vs dataURI decoding) if the CSS does not use
+   dataURIs.
+   Defaults to False
+
+scour-*
+   All the options from scour_, using the 'scour-' prefix. 'strip-xml-prolog'
+   becomes 'scour-strip-xml-prolog'
 
 
 .. |copyright| unicode:: 0xA9

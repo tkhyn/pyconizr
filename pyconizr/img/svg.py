@@ -192,7 +192,7 @@ class SVGSprite(SVGObj):
 
     def makeOutput(self, iconizr):
 
-        out_type = iconizr.options['out']
+        out_type = iconizr.options['render']
 
         if out_type == 'no':
             return True
@@ -213,19 +213,15 @@ class SVGSprite(SVGObj):
         # determine target outputs to generate
         dests = ['']  # default = svg sprite only
 
-        if iconizr.options['out-png']:
+        if iconizr.options['png']:
             dests.append('png')
 
-        if iconizr.options['out-data']:
-            dests = ['-'.join(d, 'data') for d in dests]
+        if iconizr.options['data']:
+            dests = ['-'.join((d, 'data')) for d in dests]
 
         out_icons = iconizr.options['out-icons']
-        if out_icons != 'no':
-            icons_dests = ['-'.join(d, 'icons') for d in dests]
-            if out_icons == 'also':
-                dests.extends(icons_dests)
-            elif out_icons == 'only':
-                dests = icons_dests
+        if out_icons:
+            dests.extend(['-'.join((d, 'icons')) for d in dests])
 
         out_dir = os.path.join(iconizr.temp_dir, 'out')
         os.makedirs(out_dir)
@@ -238,18 +234,14 @@ class SVGSprite(SVGObj):
             # generate rendering context
             context = {
                 'sprite': self,
-                'common_class': iconizr.options['out-class'],
+                'common_class': iconizr.options['class'],
             }
 
             if 'icons' in dest:
                 context['as_icons'] = True
-                context['url_dir'] = \
-                    os.path.relpath(iconizr.tgt_icons_dir,
-                                    iconizr.out_css_dir).replace('\\', '/')
+                context['url_dir'] = iconizr.options['icons-url']
             else:
-                context['url_dir'] = \
-                    os.path.relpath(os.path.dirname(iconizr.tgt_sprite),
-                                    iconizr.out_css_dir).replace('\\', '/')
+                context['url_dir'] = iconizr.options['sprites-url']
 
             if 'png' in dest:
                 context['png'] = True

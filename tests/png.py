@@ -7,7 +7,7 @@ PNG_PATH = os.path.join(os.path.dirname(__file__), 'expected', 'pngs')
 
 class PNGTests(PyconizrTestCase):
 
-    options = {'out-icons': True}
+    options = {'out-icons': 'icons'}
 
     def test_make_png(self):
         # optimize SVGs, generate sprite and create PNGs

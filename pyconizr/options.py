@@ -18,57 +18,63 @@ OPTIONS = {
     )),
     'out': (('-o'), dict(
         action='store',
-        default='css',
-        help='The desired predefined output type, can be:\n'
-             '- css: for CSS output [default]\n'
-             '- scss: for SASS output\n'
-             '- no: no output (to simply generate a sprite)\n'
-             '- a path to a custom jinja2 template file'
-    )),
-    'out-path': (('-p'), dict(
-        action='store',
         default=os.path.join(_cwd, 'out'),
-        help='Output file name or directory [default = out]'
-    )),
-    'out-css-dir': ((), dict(
-        action='store',
-        default=None,
-        help='The directory of the final CSS file if different from out-path '
-             '[default = out-path]'
+        help='Output directory [default = cwd/out]'
     )),
     'out-sprite': (('-s'), dict(
         action='store',
         default=os.path.join(_cwd, 'sprites'),
         help='SVG and/or PNG sprite output directory or filename '
-             '[default = cwd/sprites/automatic_filename.svg]'
+             '[default = out/sprites/auto_name.svg]'
     )),
     'out-icons': ((), dict(
         action='store',
-        choices=('no', 'also', 'only'),
-        default='no',
-        help='Should individual (optimised) icons be generated as well '
-             '(also), instead of the sprite (only) or not at all (no)?'
-             '[default = no]'
+        default=None,
+        help='Individual SVG and PNG icons sub-directory, relative to '
+             'the sprite output directory. If not specified, no individual '
+             'icons are generated [default = None]'
     )),
-    'out-icons-dir': ((), dict(
+    'render': (('-r'), dict(
+        action='store',
+        default='css',
+        help='How the output should be rendered. Can be:\n'
+             '- css: for CSS output [default]\n'
+             '- scss: for SASS output\n'
+             '- no: no output (to simply generate a sprite)\n'
+             '- a path to a custom jinja2 template file'
+    )),
+    'static-url': ((), dict(
+        action='store',
+        default='/static',
+        help='The absolute URL to the static directory [default = /static]'
+    )),
+    'sprites-url': ((), dict(
+        action='store',
+        default='sprites',
+        help='The URL to the sprites directory, can be relative (to the '
+             'static URL) or absolute [default = sprites]'
+    )),
+    'icons-url': ((), dict(
         action='store',
         default='icons',
-        help='Individual SVG and PNG icons sub-directory, relative to '
-             'out-sprite [default = out-icons/icons]'
+        help='The URL to the icons directory, can be relative (to the '
+             'static URL) or absolute. Has no effect if out-icons is '
+             'not provided.'
+             '[default = icons]. '
     )),
-    'out-png': ((), dict(
+    'png': (('-p'), dict(
         action='store_true',
         default=True,
         help='Generate PNG fallback sprite (or icons if out-icons is True) '
              '[default = True]'
     )),
-    'out-data': ((), dict(
+    'data': (('-d'), dict(
         action='store_true',
         default=False,
         help='Do not generate any output file and generate data URIs instead '
              '[default = False]'
     )),
-    'out-class': (('-c'), dict(
+    'class': (('-c'), dict(
         action='store',
         default=None,
         help='A class name that is common to all icons [default = None]'
