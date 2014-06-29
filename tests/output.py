@@ -76,3 +76,14 @@ class SCSSTestsCommon(OutputTests):
         scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')
         scss_ref = os.path.join(EXPECTED_PATH, 'icons-common.scss')
         self.assertSame(scss_file, scss_ref, mode='t')
+
+
+class OutputPaddingTests(OutputTests):
+
+    options = {'render': 'scss', 'padding': '2', 'class': 'icons'}
+
+    def test_padding_output(self):
+
+        scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')
+        scss_ref = os.path.join(EXPECTED_PATH, 'icons-padding.scss')
+        self.assertSame(scss_file, scss_ref, mode='t')

@@ -1,0 +1,17 @@
+.icons {
+  background-image: url(/static/sprites/icons.svg);
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+}
+
+.red-triangle {
+  background-position: 0 0;
+}
+
+.yellow-star {
+  background-position: 0 34px;
+  &:hover, &.icons-hover, &.icons_hover {
+    background-position: 0 68px;
+  }
+}

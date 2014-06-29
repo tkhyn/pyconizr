@@ -62,6 +62,11 @@ OPTIONS = {
              'not provided.'
              '[default = icons]. '
     )),
+    'padding': ((), dict(
+        action='store',
+        default='0',
+        help='Padding around the icons, in pixels. [default = 0]'
+    )),
     'png': (('-p'), dict(
         action='store_true',
         default=True,

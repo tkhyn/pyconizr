@@ -148,10 +148,16 @@ class SVGSprite(SVGObj):
         """
         Inserts all the SVGs in the sprite
         """
+
+        valid_selectors = iconizr.selectors
+        padding = int(iconizr.options['padding'])
+
         ns_map = {}
         for icon in copy(self.icons):
             ns_map.update(icon.root.nsmap)
-            self._add_icon(icon, iconizr)
+            self._add_icon(icon, padding, valid_selectors)
+
+        self.height -= padding
 
         # hack to make self.root inherit namespaces, as they would be erased
         # when self.root would be added to self.xml
@@ -171,7 +177,7 @@ class SVGSprite(SVGObj):
         for k, v in attrs.iteritems():
             self.root.set(k, v)
 
-    def _add_icon(self, icon, iconizr):
+    def _add_icon(self, icon, padding, valid_selectors):
 
         # calculate position on the sprite
         width = icon.width
@@ -183,7 +189,7 @@ class SVGSprite(SVGObj):
 
         # change the sprite's offsets
         self.width = max(self.width, width)
-        self.height += height
+        self.height += height + padding
 
         for k, v in root_attrs.iteritems():
             icon.root.set(k, v)
@@ -200,7 +206,7 @@ class SVGSprite(SVGObj):
         spl = icon.name.split('_')
         if len(spl) > 1:
             sel = spl[-1]
-            if sel in iconizr.selectors:
+            if sel in valid_selectors:
                 parent_name = '_'.join(spl[:-1])
                 for i in self.icons:
                     if i.name == parent_name:
