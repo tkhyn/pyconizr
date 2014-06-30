@@ -1,5 +1,8 @@
 .icons {
   background-image: url(/static/sprites/icons.svg);
+  &.nosvg {
+    background-image: url(/static/sprites/icons.png);
+  }
   background-repeat: no-repeat;
   width: 32px;
   height: 32px;

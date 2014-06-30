@@ -118,6 +118,7 @@ class SVGIcon(SVGObj):
     def get_position(self):
         return (self.X, self.Y)
 
+    @property
     def css_selector(self):
         return '.' + self.name
 
@@ -251,9 +252,6 @@ class SVGSprite(SVGObj):
         # determine target outputs to generate
         dests = ['']  # default = svg sprite only
 
-        if iconizr.options['png']:
-            dests.append('png')
-
         if iconizr.options['data']:
             dests = ['-'.join((d, 'data')) for d in dests]
 
@@ -281,7 +279,7 @@ class SVGSprite(SVGObj):
             else:
                 context['url_dir'] = iconizr.options['sprites-url']
 
-            if 'png' in dest:
+            if iconizr.options['png']:
                 context['png'] = True
 
             if 'data' in dest:

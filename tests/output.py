@@ -32,15 +32,6 @@ class CSSTests(OutputTests):
         css_ref = os.path.join(EXPECTED_PATH, 'icons.css')
         self.assertSame(css_file, css_ref, mode='t')
 
-        # check png fallback version
-        css_png_file = open(os.path.join(self.iconizr.temp_dir, 'out',
-                                         'icons-png.css'))
-        css_ref_file = open(css_ref)
-        self.assertEqual(css_png_file.read(),
-                         css_ref_file.read().replace('.svg', '.png'))
-        css_png_file.close()
-        css_ref_file.close()
-
 
 class SCSSTests(OutputTests):
     """
@@ -53,15 +44,6 @@ class SCSSTests(OutputTests):
         scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')
         scss_ref = os.path.join(EXPECTED_PATH, 'icons.scss')
         self.assertSame(scss_file, scss_ref, mode='t')
-
-        # check png fallback version
-        scss_png_file = open(os.path.join(self.iconizr.temp_dir, 'out',
-                                          'icons-png.scss'))
-        scss_ref_file = open(scss_ref)
-        self.assertEqual(scss_png_file.read(),
-                         scss_ref_file.read().replace('.svg', '.png'))
-        scss_png_file.close()
-        scss_ref_file.close()
 
 
 class SCSSTestsCommon(OutputTests):

@@ -4,6 +4,9 @@
   width: 32px;
   height: 32px;
 }
+.red-triangle.nosvg, .yellow-star.nosvg {
+  background-image: url(/static/sprites/icons.png);
+}
 
 .red-triangle {
   background-position: 0 0;

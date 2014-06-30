@@ -5,14 +5,22 @@
   height: {{ icon.css('height') }};
 {% endmacro -%}
 
-{%- macro bkg_image(icon) -%}
-{%- set icon=icon.png if png else icon -%}
+{%- macro _bkg_image(icon) -%}
 {%- if data -%}
   {%- set url=icon.data_URI() -%}
 {%- else -%}
   {%- set url=url_dir + '/' + icon.filename -%}
 {%- endif -%}
 background-image: url({{ url }});
+{%- endmacro -%}
+
+{%- macro bkg_image(icon, padding) -%}
+{{ _bkg_image(sprite) }}
+{%- if png %}
+{{ padding }}&.nosvg {
+{{ padding }}  {{ _bkg_image(sprite.png) }}
+{{ padding -}} }
+{%- endif %}
 {%- endmacro -%}
 
 {#- General declaration for background and dimensions if possible -#}
@@ -24,7 +32,7 @@ background-image: url({{ url }});
 {%- endfor -%}
 {%- endif %} {
   {%- if not as_icons %}
-  {{ bkg_image(sprite) }}
+  {{ bkg_image(sprite, '  ') }}
   {%- endif %}
   background-repeat: no-repeat;
   {%- if n_groups == 1 %}
@@ -45,12 +53,12 @@ background-image: url({{ url }});
 {#- now define positions, individually -#}
 
 {% for icon in group %}
-{{ icon.css_selector() }} {
+{{ icon.css_selector }} {
   {%- if n_groups > 1 or not common_class %}
   @extend %icongroup{{ group_index }};
   {%- endif %}
   {%- if as_icons %}
-  {{ bkg_image(icon) }}
+  {{ bkg_image(icon, '  ') }}
   {%- endif %}
   background-position: {{ icon.css('background-position') }};
   {%- if group|length == 1 %}
@@ -60,7 +68,7 @@ background-image: url({{ url }});
   {%- set sel=c_icon.selector %}
   &:{{ sel }}, &.{{ sprite.name }}-{{ sel }}, &.{{ sprite.name }}_{{ sel }} {
     {%- if as_icons %}
-    {{ bkg_image(c_icon) }}
+    {{ bkg_image(c_icon, '   ') }}
     {%- endif %}
     background-position: {{ c_icon.css('background-position') }};
   }

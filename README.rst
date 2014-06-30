@@ -108,7 +108,8 @@ class
    Default to ``None``.
 
 png
-   Should png fallbacks be generated?
+   Should png fallbacks be generated? If True, PNG sprites will be generated
+   and used by any icon bearing a 'nosvg' class.
    Defaults to ``True``
 
 data
