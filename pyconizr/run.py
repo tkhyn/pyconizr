@@ -25,7 +25,8 @@ def execute_from_cl():
     parser = argparse.ArgumentParser(
         description='Pyconizr: SVG and PNG sprites from SVG files\n'
                     'Author: Thomas Khyn\n'
-                    'Based on Iconizr by Joschi Kuphal')
+                    'Inspiration taken from Iconizr by Joschi Kuphal',
+        formatter_class=argparse.RawDescriptionHelpFormatter)
 
     for o, param in OPTIONS.iteritems():
         parser.add_argument('--' + o, *param[0], **param[1])
