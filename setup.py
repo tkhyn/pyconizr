@@ -1,6 +1,6 @@
 """
 pyconizr
-Python library to generate sprites from source SVG files
+Generate sprites from SVG icons
 (c) 2014 Thomas Khyn
 MIT license (see LICENSE.txt)
 """
@@ -34,7 +34,7 @@ DEV_STATUS = {'pre': '2 - Pre-Alpha',
 metadata = dict(
     name='pyconizr',
     version=__version__,
-    description='Python library to generate sprites from source SVG files',
+    description='Generate sprites from SVG icons',
     author='Thomas Khyn',
     author_email='thomas@ksytek.com',
     url='http://bitbucket.org/tkhyn/pyconizr/',

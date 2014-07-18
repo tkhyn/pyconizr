@@ -34,7 +34,7 @@ From the command line::
 From python::
 
    from pyconizr import iconize
-   iconize(**options)
+   iconize(option1=val1, option2=val2, ...)
 
 
 Default behavior
@@ -47,7 +47,7 @@ By default, pyconizr will:
      current_working_dir/sprites/sourcedir_name.svg
    - create a PNG sprite from the SVG sprite as
      current_working_dir/sprites/sourcedir_name.png
-   - create a CSS/SCSS/LESS file at current_working_dir/sourcedir_name
+   - create a CSS/SCSS/whatever file at current_working_dir/sourcedir_name
 
 This can be configured using the following options.
 
@@ -83,10 +83,11 @@ out-icons
 
 render, -r
    How the output should be rendered. Can be:
-     - css: for CSS output [default]\n'
-     - scss: for SASS output\n'
-     - no: no output (to simply generate a sprite)\n'
-     - a path to a custom Jinja2_ template file for a 100% custom output
+     - css: for CSS output [default]
+     - scss: for SASS output
+     - no or ``Falsy`` from python: no output (to simply generate the sprite)
+     - a path to a custom Jinja2_ template file for a 100% custom output (see
+       existing templates for available variables)
 
 static-url
    The absolute URL to the static directory. Used for links towards sprites and
@@ -103,9 +104,13 @@ icons-url
    for links towards individual icons. Not used if out-icons is not defined.
    Defaults to ``icons``
 
-class
-   A common CSS class for all the icons in the sprite.
-   Default to ``None``.
+padding
+   Padding around the icons, in pixels.
+   Defaults to ``0``.
+
+layout
+   The sprite layout. Can be vertical, horizontal or diagonal.
+   Defaults to ``vertical``.
 
 png
    Should png fallbacks be generated? If True, PNG sprites will be generated
@@ -117,6 +122,10 @@ data
    faster (thanks to caching vs dataURI decoding) if the CSS does not use
    dataURIs.
    Defaults to ``False``
+
+class
+   A common CSS class for all the icons in the sprite.
+   Default to ``None``.
 
 selectors
    Comma-separated list of selectors that can be embedded in icons filenames,
