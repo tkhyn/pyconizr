@@ -3,7 +3,7 @@ pyconizr
 
 |copyright| 2014 Thomas Khyn
 
-Python package to generate sprites from SVG files directories
+Python package to generate sprites from SVG icons
 
 This package is inspired from Iconizr_ and grunt-iconizr_ by Joschi Kuphal.
 
@@ -14,6 +14,9 @@ From Joschi's words, Iconizr ...::
    sprite or embedded data URIs. iconizr creates suitable CSS / Sass / LESS
    etc. resources and a JavaScript loader for easy integration into your
    HTML documents.
+
+Not all the functionnalities from the original Iconizr are implemented yet,
+but most of them are here.
 
 
 Installation
