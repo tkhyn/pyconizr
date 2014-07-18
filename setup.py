@@ -31,7 +31,7 @@ setup(
     long_description=open(os.path.join('README.rst')).read(),
     author='Thomas Khyn',
     author_email='thomas@ksytek.com',
-    url='http://bitbucket.org/tkhyn/pyconizr/',
+    url='https://bitbucket.org/tkhyn/pyconizr/',
     keywords=['iconizr', 'SVG', 'PNG', 'sprite'],
     classifiers=[
         'Programming Language :: Python',
