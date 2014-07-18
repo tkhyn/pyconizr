@@ -57,4 +57,5 @@ class PNGfromSVG(Image):
         self.ctxt.scale(self.scale, self.scale)
 
         self.hdlr.render_cairo(self.ctxt)
-        self.surf.write_to_png(self.path)
+        # write_to_png requires a str (fails with a unicode arg)
+        self.surf.write_to_png(str(self.path))
