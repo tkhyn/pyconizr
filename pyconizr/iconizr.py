@@ -196,9 +196,10 @@ class Iconizr(object):
                      or self.options['png']):
                     shutil.copy(f, to_dir)
 
-        # copy main output files
-        copy_files(os.path.join(self.temp_dir, 'out'),
-                   self.out_dir)
+        # copy main output files if required
+        if self.render:
+            copy_files(os.path.join(self.temp_dir, 'out'),
+                       self.out_dir)
 
         # copy png and SVG sprites
         copy_files(os.path.dirname(self.temp_sprite),
