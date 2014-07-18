@@ -5,17 +5,10 @@ Generate sprites from SVG icons
 MIT license (see LICENSE.txt)
 """
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 import os
 import sys
 
-INC_PACKAGES = 'pyconizr',  # string or tuple of strings
-EXC_PACKAGES = ()  # tuple of strings
-
-install_requires = (
-    'scour>=0.28',
-    'lxml>=3.3.5',
-)
 
 # imports __version__ variable
 exec(open('pyconizr/version.py').read())
@@ -31,10 +24,11 @@ DEV_STATUS = {'pre': '2 - Pre-Alpha',
               'final': '5 - Production/Stable'}
 
 # setup function parameters
-metadata = dict(
+setup(
     name='pyconizr',
     version=__version__,
     description='Generate sprites from SVG icons',
+    long_description=open(os.path.join('README.rst')).read(),
     author='Thomas Khyn',
     author_email='thomas@ksytek.com',
     url='http://bitbucket.org/tkhyn/pyconizr/',
@@ -50,41 +44,22 @@ metadata = dict(
         'Topic :: Multimedia :: Graphics :: Editors :: Vector-Based',
         'Topic :: Software Development :: Build Tools',
     ],
-    scripts=['scripts/pyconizr.py']
+    packages=find_packages(exclude=('tests',)),
+    include_package_data=True,
+    package_data={
+        '': ['LICENSE.txt', 'README.rst']
+    },
+    install_requires=(
+        'scour==0.28',
+        'lxml>=3.3',
+        'jinja2>=2.7',
+    ),
+    entry_points={
+        'console_scripts': [
+            'pyconizr = pyconizr.run:execute_from_cl'
+        ],
+    }
 )
-
-
-# packages parsing from root packages, without importing sub-packages
-root_path = os.path.dirname(__file__)
-if isinstance(INC_PACKAGES, basestring):
-    INC_PACKAGES = (INC_PACKAGES,)
-
-packages = []
-excludes = list(EXC_PACKAGES)
-for pkg in INC_PACKAGES:
-    pkg_root = os.path.join(root_path, *pkg.split('.'))
-    for dirpath, dirs, files in os.walk(pkg_root):
-        rel_path = os.path.relpath(dirpath, pkg_root)
-        pkg_name = pkg
-        if (rel_path != '.'):
-            pkg_name += '.' + rel_path.replace(os.sep, '.')
-        for x in excludes:
-            if x in pkg_name:
-                continue
-        if '__init__.py' in files:
-            packages.append(pkg_name)
-        elif dirs:  # stops package parsing if no __init__.py file
-            excludes.append(pkg_name)
-
-
-def read(filename):
-    return open(os.path.join(root_path, filename)).read()
-
-setup(**dict(metadata,
-   packages=packages,
-   long_description=read('README.rst'),
-   install_requires=install_requires
-))
 
 try:
     import cairo
@@ -94,8 +69,8 @@ except ImportError:
 *********************************** WARNING ***********************************
  To use Pyconizr\'s PNG functionalities, you need to install cairo and rsvg as
  well as their Python bindings.
- On Windows, it\'s easier to download and install the all-in-one version of
- PyGTK.
+ On Windows, the easiest way to do it is to download and install the
+ all-in-one version of PyGTK.
 *******************************************************************************
 
 """)
