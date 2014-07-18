@@ -42,7 +42,7 @@ class Iconizr(object):
         sprite_path_end = os.path.split(self.tgt_sprite)[1]
         if '.' in sprite_path_end:
             # out-sprite is a filename
-            self.sprite_name = os.path.splitext(sprite_path_end)[0]
+            self.sprite_name = sprite_path_end
         else:
             # out-sprite is a directory name, the sprite name and path will
             # be set on input files parsing
