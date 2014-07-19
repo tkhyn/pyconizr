@@ -32,7 +32,7 @@ Usage
 
 From the command line::
 
-   pyconizr.py [options]
+   pyconizr [options]
 
 From python::
 
