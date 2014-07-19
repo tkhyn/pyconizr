@@ -5,7 +5,8 @@ pyconizr
 
 Python package to generate sprites from SVG icons
 
-This package is inspired from Iconizr_ and grunt-iconizr_ by Joschi Kuphal.
+This package takes its inspiration from Iconizr_ and grunt-iconizr_ by
+Joschi Kuphal.
 
 From Joschi's words, Iconizr ...::
 
