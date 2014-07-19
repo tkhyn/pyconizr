@@ -1,7 +1,8 @@
 syntax: glob
 
-# distutils generated files and folders
+# setuptools generated files and folders
 dist
+build
 MANIFEST
 
 # buildout files and folders
