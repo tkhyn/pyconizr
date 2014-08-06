@@ -69,7 +69,7 @@ pyconizr_options = (
     ))),
     ('layout', ((), dict(
         action='store',
-        choices=['vertical', 'horizontal', 'diagonal'],
+        choices=['none', 'vertical', 'horizontal', 'diagonal'],
         default='vertical',
         help='The sprite layout. Can be vertical, horizontal or diagonal. '
              '[default = vertical]'

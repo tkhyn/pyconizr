@@ -102,9 +102,11 @@ class Iconizr(object):
             raise Exception('No icon files found mathing pattern "%s"'
                             % options['in'])
 
-        # create the temp sprite
+        # create the temp sprite ...
         self.temp_sprite = os.path.join(self.temp_dir, 'sprites',
                                         self.sprite_name)
+        # ... and the sprite object
+        self.sprite = SVGSprite(self.temp_sprite, self.icons)
 
         # extract output directory and name
         out = os.path.abspath(self.options['out'])
@@ -161,7 +163,6 @@ class Iconizr(object):
             os.makedirs(os.path.dirname(self.temp_sprite))
         except os.error:
             pass
-        self.sprite = SVGSprite(self.temp_sprite, self.icons)
         self.sprite.populate(self)
         self.sprite.save(self)
 

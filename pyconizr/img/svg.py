@@ -108,15 +108,9 @@ class SVGIcon(SVGObj):
             for dim in ('width', 'height'):
                 self.root.set(dim, f2str(getattr(self, dim), 'px'))
 
-        # position initialisation
-        self.X = self.Y = 0
-
         # selector
         self.children = []
         self.selector = None
-
-    def get_position(self):
-        return (self.X, self.Y)
 
     @property
     def css_selector(self):
@@ -126,7 +120,8 @@ class SVGIcon(SVGObj):
         if prop in ('height', 'width'):
             return f2str(getattr(self, prop), 'px')
         elif prop == 'background-position':
-            return f2str(self.X, 'px') + ' ' + f2str(self.Y, 'px')
+            return f2str(getattr(self, 'X', 0), 'px') + ' ' \
+                   + f2str(getattr(self, 'Y', 0), 'px')
         else:
             raise ValueError('Invalid CSS property: ' + prop)
 
@@ -184,25 +179,38 @@ class SVGSprite(SVGObj):
 
     def _add_icon(self, icon, layout, padding, valid_selectors):
 
-        # calculate position on the sprite
         width = icon.width
         height = icon.height
 
+        X = getattr(icon, 'X', None)
+        Y = getattr(icon, 'Y', None)
+
         root_attrs = {'id': icon.name}
-        if layout in ('vertical', 'diagonal'):
-            icon.Y = self.height
-            root_attrs.update({'y': f2str(icon.Y)})
-            self.height += height + padding
 
-        if layout in ('horizontal', 'diagonal'):
-            icon.X = self.width
-            root_attrs.update({'x': f2str(icon.X)})
-            self.width += width + padding
+        if X is None or Y is None:
+            # X or Y is undefined, calculate them according to the defined
+            # layout
 
-        if layout == 'vertical':
-            self.width = max(self.width, width)
-        elif layout == 'horizontal':
-            self.height = max(self.height, height)
+            icon.X = icon.Y = 0
+
+            if layout in ('vertical', 'diagonal'):
+                icon.Y = self.height
+                root_attrs.update({'y': f2str(icon.Y)})
+                self.height += height + padding
+
+            if layout in ('horizontal', 'diagonal'):
+                icon.X = self.width
+                root_attrs.update({'x': f2str(icon.X)})
+                self.width += width + padding
+
+            if layout == 'vertical':
+                self.width = max(self.width, width)
+            elif layout == 'horizontal':
+                self.height = max(self.height, height)
+        else:
+            # X and Y are provided, simply update the XML tree
+            # the sprite's dimensions are not changed
+            root_attrs.update({'x': f2str(X), 'y': f2str(Y)})
 
         for k, v in root_attrs.iteritems():
             icon.root.set(k, v)

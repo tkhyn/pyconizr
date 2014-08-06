@@ -12,6 +12,10 @@ class Image(object):
     def get_dimensions(self):
         return self.width, self.height
 
+    def set_dimensions(self, w, h):
+        self.width = w
+        self.height = h
+
     def data_type(self):
         raise NotImplementedError
 
