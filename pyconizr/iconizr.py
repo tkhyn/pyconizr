@@ -21,8 +21,11 @@ class Iconizr(object):
 
         # check options and set defaults
         for o, param in OPTIONS.iteritems():
-            options.setdefault(param[1].get('dest', None) or o,
-                               param[1].get('default', None))
+            option_name = param[1].get('dest', None) or o
+            default_value = param[1].get('default', None)
+            options.setdefault(option_name, default_value)
+            if 'choices' in param[1]:
+                assert options[option_name] in param[1]['choices']
 
         for url in ('sprites', 'icons'):
             opt = options[url + '-url']
