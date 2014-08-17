@@ -164,6 +164,13 @@ scour_options = (
         default=True,
         help='won\'t embed rasters as base64-encoded data'
     ))),
+    ('keep-unreferenced-defs', ((), dict(
+        dest='keep_defs',
+        action='store_true',
+        default=False,
+        help='won\'t remove elements within the defs container that are '
+             'unreferenced'
+    ))),
     ('keep-editor-data', ((), dict(
         dest='keep_editor_data',
         action='store_true',
