@@ -23,6 +23,13 @@ DEV_STATUS = {'pre': '2 - Pre-Alpha',
               'rc': '5 - Production/Stable',
               'final': '5 - Production/Stable'}
 
+# calculate scour version depending on python version
+if sys.version_info < (2, 7):
+    scour_version = '<= 0.28'
+else:
+    scour_version = ''
+
+
 # setup function parameters
 setup(
     name='pyconizr',
@@ -51,7 +58,7 @@ setup(
         '': ['LICENSE.txt', 'README.rst']
     },
     install_requires=(
-        'scour==0.28',
+        'scour%s' % scour_version,
         'lxml>=3.3',
         'jinja2>=2.7',
     ),
