@@ -1,10 +1,24 @@
 import os
+import sys
 import urllib
 
-import cairo
-import rsvg
+try:
+    import cairo
+except ImportError:
+    cairo = None
 
-from base import Image
+try:
+    import rsvg
+except ImportError:
+    if sys.platform == 'win32':
+        try:
+            from gi.repository import Rsvg as rsvg
+        except:
+            rsvg = None
+    else:
+        rsvg = None
+
+from .base import Image
 
 
 class PNGfromSVG(Image):
@@ -39,6 +53,24 @@ class PNGfromSVG(Image):
         self.scale = scale
 
         self.surf = None
+
+    def _check_libs(self):
+        if not cairo:
+            self.raise_lib_error('Cairo')
+        if not rsvg:
+            self.raise_lib_error('librsvg')
+
+    def _raise_lib_error(self, lib):
+        if sys.platform == 'win32':
+            msg = ' On Windows, the recommended way to do that is to ' \
+                'install PyGTK or PyGI, depending on your Python version.'
+        else:
+            msg = ''
+        raise ImportError('%(Lib)s is necessary to use pyconizr\'s PNG '
+            'functionalities, but could not be found or imported. Please '
+            'make sure that %(lib)s and its Python bindings are installed.' %
+            {'Lib': lib.capitalize(), 'lib': lib}
+            + msg)
 
     def data_type(self):
         return 'png;base64'

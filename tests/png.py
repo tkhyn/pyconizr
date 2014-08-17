@@ -1,10 +1,13 @@
 import os
 
-from base import PyconizrTestCase
+from base import PyconizrTestCase, unittest
+
+from pyconizr.img.png import cairo, rsvg
 
 PNG_PATH = os.path.join(os.path.dirname(__file__), 'expected', 'pngs')
 
 
+@unittest.skipIf(None in (cairo, rsvg), 'Missing cairo / librsvg')
 class PNGTests(PyconizrTestCase):
 
     options = {'out-icons': 'icons'}

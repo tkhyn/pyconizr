@@ -30,6 +30,19 @@ As straighforward as it can be, using ``pip``::
    pip install pyconizr
 
 
+Requirements
+------------
+
+Pyconizr will install all the required dependencies, except Cairo and librsvg
+and their python bindings, which are needed to generate PNG images. Please make
+sure they are installed in your environment if you want to use the pyconizr's
+PNG functionalities.
+
+If you are on Windows, the quickest way to install them is to use either PyGTK_
+(for python 2.6 and 2.7) or PyGI_ (for python 2.7).
+
+
+
 Usage
 -----
 

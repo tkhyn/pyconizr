@@ -64,14 +64,18 @@ setup(
 
 try:
     import cairo
-    import rsvg
+    try:
+        import rsvg
+    except ImportError:
+        from gi.repository import Rsvg
 except ImportError:
-    sys.stderr.write("""
+    import warnings
+    warnings.warn("""
 *********************************** WARNING ***********************************
  To use Pyconizr\'s PNG functionalities, you need to install cairo and rsvg as
  well as their Python bindings.
  On Windows, the easiest way to do it is to download and install the
- all-in-one version of PyGTK.
+ all-in-one version of PyGTK (python 2.6 and 2.7) or PyGI (python 2.7)
 *******************************************************************************
 
 """)
