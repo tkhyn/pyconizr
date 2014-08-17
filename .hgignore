@@ -10,22 +10,10 @@ bin
 .installed.cfg
 pyconizr.egg-info
 
-# eclipse project related files and folders
-.pydevproject
-.project
-.settings
+# test files
+.coverage
+.tox
 
 # python binary files
 *.pyc
-
-# locale binary files
-*.mo
-
-# log files
-*.log
-
-# Windows thumbnails
-**/thumbs.db
-
-# test files
-.coverage
+__pycache__
