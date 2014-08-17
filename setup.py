@@ -53,10 +53,6 @@ setup(
         'Topic :: Software Development :: Build Tools',
     ],
     packages=find_packages(exclude=('tests',)),
-    include_package_data=True,
-    package_data={
-        '': ['LICENSE.txt', 'README.rst']
-    },
     install_requires=(
         'scour%s' % scour_version,
         'lxml>=3.3',
