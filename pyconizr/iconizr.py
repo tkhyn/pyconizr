@@ -8,8 +8,10 @@ import shutil
 import tempfile
 import glob
 
-from options import OPTIONS
-from img.svg import SVGIcon, SVGSprite
+from six import iteritems
+
+from .options import OPTIONS
+from .img.svg import SVGIcon, SVGSprite
 
 
 TEMP_PREFIX = 'pyconizr-'
@@ -20,7 +22,7 @@ class Iconizr(object):
     def __init__(self, **options):
 
         # check options and set defaults
-        for o, param in OPTIONS.iteritems():
+        for o, param in iteritems(OPTIONS):
             option_name = param[1].get('dest', None) or o
             default_value = param[1].get('default', None)
             options.setdefault(option_name, default_value)

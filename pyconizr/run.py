@@ -1,5 +1,7 @@
-from options import OPTIONS
-from iconizr import Iconizr
+from six import iteritems
+
+from .options import OPTIONS
+from .iconizr import Iconizr
 
 
 def iconize(**options):
@@ -11,7 +13,7 @@ def iconize(**options):
 
     try:
         result = iconizr.iconize()
-    except Exception, e:
+    except Exception as e:
         raise e
     finally:
         iconizr.clean()
@@ -28,7 +30,7 @@ def execute_from_cl():
                     'Inspiration taken from Iconizr by Joschi Kuphal',
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    for o, param in OPTIONS.iteritems():
+    for o, param in iteritems(OPTIONS):
         parser.add_argument('--' + o, *param[0], **param[1])
 
     options = vars(parser.parse_args())

@@ -8,6 +8,7 @@ try:
 except ImportError:
     from ordereddict import OrderedDict
 
+from  six import iteritems
 
 __all__ = ['OPTIONS']
 
@@ -246,5 +247,5 @@ scour_options = (
 SCOUR_OPTIONS = OrderedDict(scour_options)
 
 # append scour options to the global options, with the 'scour-' prefix
-for k, v in SCOUR_OPTIONS.iteritems():
+for k, v in iteritems(SCOUR_OPTIONS):
     OPTIONS['scour-' + k] = v

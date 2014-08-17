@@ -5,14 +5,16 @@ from collections import defaultdict
 import urllib
 from copy import copy
 
+from six import iteritems
+
 from lxml import etree as ET, objectify
 from scour import scour
 import jinja2
 
 from ..helpers import parseDim, f2str
 
-from base import Image
-from png import PNGfromSVG
+from .base import Image
+from .png import PNGfromSVG
 
 
 # patch scour
@@ -174,7 +176,7 @@ class SVGSprite(SVGObj):
             'height': h + 'px',
             'viewBox': '0 0 %s %s' % (w, h)
         }
-        for k, v in attrs.iteritems():
+        for k, v in iteritems(attrs):
             self.root.set(k, v)
 
     def _add_icon(self, icon, layout, padding, valid_selectors):
@@ -212,7 +214,7 @@ class SVGSprite(SVGObj):
             # the sprite's dimensions are not changed
             root_attrs.update({'x': f2str(X), 'y': f2str(Y)})
 
-        for k, v in root_attrs.iteritems():
+        for k, v in iteritems(root_attrs):
             icon.root.set(k, v)
 
         tag = icon.root.tag

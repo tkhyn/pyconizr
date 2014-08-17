@@ -1,6 +1,6 @@
 import os
 
-from base import PyconizrTestCase, unittest
+from .base import PyconizrTestCase, unittest
 
 from pyconizr.img.png import cairo, rsvg
 

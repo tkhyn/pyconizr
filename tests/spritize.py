@@ -1,6 +1,6 @@
 from lxml import etree as ET
 
-from base import PyconizrTestCase
+from .base import PyconizrTestCase
 
 
 class SpritizeTests(PyconizrTestCase):

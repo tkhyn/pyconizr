@@ -1,6 +1,6 @@
 import os
 
-from base import PyconizrTestCase
+from .base import PyconizrTestCase
 
 
 class TotalTests(PyconizrTestCase):
