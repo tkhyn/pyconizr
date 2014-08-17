@@ -50,7 +50,7 @@ setup(
         'scour>=0.29',
         'lxml>=3.3',
         'jinja2>=2.7',
-    ),
+    ) + (('ordereddict',) if sys.version_info < (2.7) else ()),
     entry_points={
         'console_scripts': [
             'pyconizr = pyconizr.run:execute_from_cl'
