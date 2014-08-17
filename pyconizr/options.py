@@ -3,7 +3,11 @@ Pyconizr options list
 '''
 
 import os
-from collections import OrderedDict
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
+
 
 __all__ = ['OPTIONS']
 

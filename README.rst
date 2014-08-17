@@ -19,6 +19,8 @@ From Joschi's words, Iconizr ...::
 Not all the functionnalities from the original Iconizr are implemented yet,
 but most of them are here.
 
+Works on Python 2.6 and 2.7.
+
 
 Installation
 ------------

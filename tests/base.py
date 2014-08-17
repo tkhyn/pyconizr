@@ -1,7 +1,11 @@
 import os
 import shutil
 from copy import copy
-from unittest import TestCase
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 from pyconizr.iconizr import Iconizr
 
@@ -9,7 +13,7 @@ __test__ = False
 __unittest = True
 
 
-class PyconizrTestCase(TestCase):
+class PyconizrTestCase(unittest.TestCase):
     """
     Create an Iconizr instance, and deletes the output directory at the end
     """

@@ -34,7 +34,8 @@ setup(
     url='https://bitbucket.org/tkhyn/pyconizr/',
     keywords=['iconizr', 'SVG', 'PNG', 'sprite'],
     classifiers=[
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Development Status :: %s' % DEV_STATUS[dev_status],
