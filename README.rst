@@ -162,5 +162,7 @@ scour-*
 
 .. _Iconizr: https://github.com/jkphl/iconizr
 .. _grunt-iconizr: https://github.com/jkphl/grunt-iconizr
+.. _PyGTK: http://www.pygtk.org/downloads.html
+.. _PyGI: http://sourceforge.net/projects/pygobjectwin32/
 .. _scour: https://github.com/oberstet/scour
 .. _Jinja2: http://jinja.pocoo.org
