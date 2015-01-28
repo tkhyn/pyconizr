@@ -69,3 +69,15 @@ class OutputPaddingTests(OutputTests):
         scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')
         scss_ref = os.path.join(EXPECTED_PATH, 'icons-padding.scss')
         self.assertSame(scss_file, scss_ref, mode='t')
+
+
+class OutputPercentTests(OutputTests):
+
+    options = {'render': 'scss', 'unit': '%'}
+
+    def test_percent_output(self):
+
+        scss_file = os.path.join(self.iconizr.temp_dir, 'out', 'icons.scss')
+        scss_ref = os.path.join(EXPECTED_PATH, 'icons-percent.scss')
+        self.assertSame(scss_file, scss_ref, mode='t')
+

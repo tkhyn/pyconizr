@@ -122,10 +122,21 @@ class SVGIcon(SVGObj):
         if prop in ('height', 'width'):
             return f2str(getattr(self, prop), 'px')
         elif prop == 'background-position':
-            return f2str(getattr(self, 'X', 0), 'px') + ' ' \
-                   + f2str(getattr(self, 'Y', 0), 'px')
+            unit_data = self.get_pos_unit()
+            return f2str(getattr(self, 'X', 0),
+                         unit_data[0], unit_data[1] - self.width) + ' ' + \
+                   f2str(getattr(self, 'Y', 0),
+                         unit_data[0], unit_data[2] - self.height)
         else:
             raise ValueError('Invalid CSS property: ' + prop)
+
+    def set_pos_unit(self, unit, Xmax=0, Ymax=0):
+        self._pos_unit = (unit, Xmax, Ymax)
+        for c in self.children:
+            c.set_pos_unit(*self._pos_unit)
+
+    def get_pos_unit(self):
+        return getattr(self, '_pos_unit', ('px', 0, 0))
 
 
 class SVGSprite(SVGObj):
@@ -275,6 +286,11 @@ class SVGSprite(SVGObj):
         out_ext = os.path.splitext(iconizr.out_name)[1]
         if not out_ext:
             out_ext = os.path.splitext(template_name)[1]
+
+        unit = iconizr.options['unit']
+        if unit != 'px':
+            for icon in self.icons:
+                icon.set_pos_unit(unit, *self.get_dimensions())
 
         for dest in dests:
             # generate rendering context

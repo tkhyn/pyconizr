@@ -101,7 +101,13 @@ pyconizr_options = (
         default='hover,target,active,',
         help='The selectors that can be embedded into filenames. '
              '[default = hover,target,active]'
-    )))
+    ))),
+    ('unit', ((), dict(
+        action='store',
+        default='px',
+        help='The unit to use for the background-position property.'
+             '[default = px]'
+    ))),
 )
 
 OPTIONS = OrderedDict(pyconizr_options)

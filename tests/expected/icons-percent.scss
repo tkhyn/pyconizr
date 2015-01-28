@@ -1,0 +1,22 @@
+%icongroup0 {
+  background-image: url(/static/sprites/icons.svg);
+  &.nosvg {
+    background-image: url(/static/sprites/icons.png);
+  }
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+}
+
+.red-triangle {
+  @extend %icongroup0;
+  background-position: 0 0;
+}
+
+.yellow-star {
+  @extend %icongroup0;
+  background-position: 0 50%;
+  &:hover, &.icons-hover, &.icons_hover {
+    background-position: 0 100%;
+  }
+}
