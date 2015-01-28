@@ -31,9 +31,7 @@ class Iconizr(object):
 
         for url in ('sprites', 'icons'):
             opt = options[url + '-url']
-            if opt.startswith('/') or ':' in opt:
-                return
-            else:
+            if not opt.startswith('/') and ':' not in opt:
                 opt = options['static-url'] + '/' + opt
             options[url + '-url'] = opt
 
