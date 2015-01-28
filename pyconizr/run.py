@@ -1,7 +1,5 @@
-from six import iteritems
-
-from .options import OPTIONS
 from .iconizr import Iconizr
+from .options import ArgParser
 
 
 def iconize(**options):
@@ -22,16 +20,7 @@ def iconize(**options):
 
 
 def execute_from_cl():
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description='Pyconizr: SVG and PNG sprites from SVG files\n'
-                    'Author: Thomas Khyn\n'
-                    'Inspiration taken from Iconizr by Joschi Kuphal',
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-
-    for o, param in iteritems(OPTIONS):
-        parser.add_argument('--' + o, *param[0], **param[1])
+    parser = ArgParser()
 
     options = vars(parser.parse_args())
     iconize(**options)

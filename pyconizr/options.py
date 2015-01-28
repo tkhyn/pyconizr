@@ -3,6 +3,7 @@ Pyconizr options list
 '''
 
 import os
+import argparse
 try:
     from collections import OrderedDict
 except ImportError:
@@ -262,3 +263,19 @@ SCOUR_OPTIONS = OrderedDict(scour_options)
 # append scour options to the global options, with the 'scour-' prefix
 for k, v in iteritems(SCOUR_OPTIONS):
     OPTIONS['scour-' + k] = v
+
+
+class ArgParser(argparse.ArgumentParser):
+
+    def __init__(self, *args, **kwargs):
+        kwargs.update({
+            'description': 'Pyconizr: SVG and PNG sprites from SVG files\n'
+                'Author: Thomas Khyn\n'
+                'Inspiration taken from Iconizr by Joschi Kuphal',
+            'formatter_class': argparse.RawDescriptionHelpFormatter
+        })
+
+        super(ArgParser, self).__init__(*args, **kwargs)
+
+        for opt, args in iteritems(OPTIONS):
+            self.add_argument('--' + opt, *args[0], **args[1])
