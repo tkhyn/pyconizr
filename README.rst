@@ -131,9 +131,10 @@ layout
    The sprite layout. Can be vertical, horizontal or diagonal.
    Defaults to ``vertical``.
 
-png
-   Should png fallbacks be generated? If True, PNG sprites will be generated
-   and used by any icon bearing a 'nosvg' class.
+png/nopng
+   By default, png fallbacks will be generated. When using the ``iconize``,
+   function, use ``png=False`` to disable the behavior. With the command line,
+   use ``--nopng``.
    Defaults to ``True``
 
 data
@@ -152,10 +153,30 @@ selectors
    taken as the hovered version of the icon name.
    Defaults to ``hover,target,active``
 
+unit
+   The unit to be used for the ``background-position`` property. Only supposed
+   to work with ``px`` and ``%``.
+   Defaults to ``px``
+
 scour-*
-   All the options from scour_, using the 'scour-' prefix. 'strip-xml-prolog'
-   becomes 'scour-strip-xml-prolog'
+   All the options from scour_, using the 'scour-' prefix. For example,
+   'strip-xml-prolog' becomes 'scour-strip-xml-prolog'.
    Defaults to best possible optimisation parameters for sprite generation.
+
+   There are 2 command-line options added for scour parameters:
+
+      scour-disable-comment-stripping
+
+         Pyconizr enables comment stripping by default. When using the
+         ``iconize`` function, use ``enable_comment_stripping=False`` to
+         disable this feature. From the command line you need to use
+         ``--scour-disable-comment-stripping``
+
+      scour-verbose
+
+         Pyconizr runs scour in quiet mode by default. If you need to see
+         scour's non-error output, use ``quiet=False`` with the ``iconize``
+         function, or ``--scour-verbose`` from the command line.
 
 
 .. |copyright| unicode:: 0xA9

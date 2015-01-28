@@ -107,7 +107,7 @@ pyconizr_options = (
     ('unit', ((), dict(
         action='store',
         default='px',
-        help='The unit to use for the background-position property.'
+        help='The unit to use for the background-position property (px or %). '
              '[default = px]'
     ))),
 )
