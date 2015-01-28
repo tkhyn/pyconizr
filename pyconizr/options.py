@@ -153,6 +153,12 @@ scour_options = (
         default=True,
         help='remove all <!-- --> comments'
     ))),
+    ('disable-comment-stripping', ((), dict(
+        dest='strip_comments',
+        action='store_false',
+        default=True,
+        help='prevent <!-- --> comments from being removed'
+    ))),
     ('shorten-ids', ((), dict(
         dest='shorten_ids',
         action='store_true',
@@ -231,6 +237,12 @@ scour_options = (
         action='store_true',
         default=True,
         help='suppress non-error output'
+    ))),
+    ('verbose', ((), dict(
+        dest='quiet',
+        action='store_false',
+        default=True,
+        help='enable scour\'s non-error output'
     ))),
     ('indent', ((), dict(
         dest='indent_type',
