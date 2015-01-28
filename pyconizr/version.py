@@ -1,7 +1,5 @@
 __version_info__ = (0, 1, 0, 'beta', 1)
 
-import subprocess
-
 
 def get_version(version=__version_info__):
 
@@ -23,6 +21,15 @@ def get_version(version=__version_info__):
 
 
 def get_hg_chgset():
+    import subprocess
+
+    try:
+        # python 3
+        DEVNULL = subprocess.DEVNULL
+    except AttributeError:
+        import os
+        DEVNULL = open(os.devnull, 'wb')
+
     try:
         return subprocess.check_output(['hg', 'id', '-i']).strip()
     except:
