@@ -1,4 +1,4 @@
-from .base import PyconizrTestCase
+from ._base import PyconizrTestCase
 
 from lxml import etree as ET
 

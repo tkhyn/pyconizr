@@ -1,6 +1,6 @@
 import os
 
-from .base import PyconizrTestCase
+from ._base import PyconizrTestCase
 
 EXPECTED_PATH = os.path.join(os.path.dirname(__file__), 'expected')
 
