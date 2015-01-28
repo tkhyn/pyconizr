@@ -80,9 +80,10 @@ pyconizr_options = (
         help='The sprite layout. Can be vertical, horizontal or diagonal. '
              '[default = vertical]'
     ))),
-    ('png', (('-p',), dict(
-        action='store_true',
+    ('nopng', ((), dict(
+        dest='png',
         default=True,
+        action='store_false',
         help='Generate PNG fallback sprite (or icons if out-icons is True) '
              '[default = True]'
     ))),
@@ -209,7 +210,6 @@ scour_options = (
     ('strip-xml-prolog', ((), dict(
         dest='strip_xml_prolog',
         action='store_true',
-        default=None,
         help='won\'t output the <?xml ?> prolog'
     ))),
     ('enable-viewboxing', ((), dict(
